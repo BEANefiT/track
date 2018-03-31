@@ -18,9 +18,9 @@ public:
     void                resize (size_t);
     void                push_back (const data_T &value);
     data_T              pop_back ();
-    data_T              &operator[] (size_t index);
-    bvector <data_T>    &operator= (const bvector &that);
-    bvector <data_T>    &operator= (bvector &&that);
+    data_T              &operator [] (size_t index);
+    bvector <data_T>    &operator = (const bvector <data_T> &that);
+    bvector <data_T>    &operator = (bvector &&that) noexcept;
     size_t              size ();
 
 private:

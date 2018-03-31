@@ -66,8 +66,8 @@ void bvector <data_T> :: resize (size_t new_capacity)
 template <typename data_T>
 void bvector <data_T> :: push_back (const data_T &value)
 {
-    if (_size >= capacity)
-        resize (2 * _capacity)
+    if (_size >= _capacity)
+        resize (2 * _capacity);
 
     _data[_size++] = value;
 }
@@ -79,5 +79,33 @@ data_T bvector <data_T> :: pop_back ()
         return _data[--_size];
 }
 
+template <typename data_T>
+data_T &bvector <data_T> :: operator [] (size_t index)
+{
+    if (index < _size)
+        return _data[index];
+}
+
+template <typename data_T>
+bvector <data_T> &bvector <data_T> :: operator = (const bvector <data_T> &that)
+{
+    bvector <data_T> tmp (that);
+    swap (tmp);
+}
+
+template <typename data_T>
+bvector <data_T> &bvector <data_T> :: operator = (bvector &&that) noexcept
+{
+    _size = that._size;
+    _capacity = that._capacity;
+    _data = that._data;
+
+}
+
+template <typename data_T>
+size_t bvector <data_T> :: size ()
+{
+    return _size;
+}
 
 #endif //__BVECTOR_HPP__
