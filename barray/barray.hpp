@@ -37,6 +37,23 @@ barray <data_T> :: ~barray ()
     delete [] _data;
 }
 
+template <typename data_T>
+data_T& barray <data_T> :: operator [] (int index)
+{
+    if (index >= 0 && index < _capacity)
+        return _data[index];
+}
 
+template <typename data_T>
+data_T barray <data_T> :: operator [] (double index)
+{
+    if (index >= 0 && index < _capacity)
+    {
+        double frac = index - (int)index;
+        double left = (index - frac);
+        double right = left + 1;
+        return _data[(int)left] * (1 - frac) + _data[(int)right] * frac;
+    }
+}
 
 #endif //__BARRAY_HPP__

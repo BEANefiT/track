@@ -14,6 +14,9 @@ public:
     barray (barray <data_T> &&that) noexcept;
     ~barray ();
 
+    data_T& operator [] (int index);
+    data_T operator [] (double index);
+
 private:
 
     size_t      _capacity;
