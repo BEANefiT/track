@@ -15,6 +15,7 @@ public:
     ~bvector ();
 
     void                swap (bvector <data_T> &that);
+    void                resize (size_t);
     void                push_back (const data_T &value);
     data_T              pop_back ();
     data_T              &operator[] (size_t index);

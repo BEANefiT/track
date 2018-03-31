@@ -42,7 +42,42 @@ bvector <data_T> :: ~bvector ()
         delete _data;
 }
 
+template <typename data_T>
+void bvector <data_T> :: swap (bvector <data_T> &that)
+{
+    std::swap (_data, that._data);
+    std::swap (_size, that._size);
+    std::swap (_capacity, that._capacity);
+}
 
+template <typename data_T>
+void bvector <data_T> :: resize (size_t new_capacity)
+{
+    data_T new_data = new (std::nothrow) data_T [new_capacity];
+
+    for (size_t i = 0; i < _size; i++)
+        new_data[i] = _data[i];
+
+    delete _data;
+    _capacity = new_capacity;
+    _data = new_data;
+}
+
+template <typename data_T>
+void bvector <data_T> :: push_back (const data_T &value)
+{
+    if (_size >= capacity)
+        resize (2 * _capacity)
+
+    _data[_size++] = value;
+}
+
+template <typename data_T>
+data_T bvector <data_T> :: pop_back ()
+{
+    if (_size > 0)
+        return _data[--_size];
+}
 
 
 #endif //__BVECTOR_HPP__
