@@ -9,7 +9,7 @@ bvector <data_T> :: bvector (size_t capacity):
         _size (0),
         _capacity (capacity)
 {
-    _data = new (std::nothrow) data_T [_capacity]
+    _data = new (std::nothrow) data_T [_capacity];
 }
 
 template <typename data_T>
@@ -53,7 +53,7 @@ void bvector <data_T> :: swap (bvector <data_T> &that)
 template <typename data_T>
 void bvector <data_T> :: resize (size_t new_capacity)
 {
-    data_T new_data = new (std::nothrow) data_T [new_capacity];
+    data_T* new_data = new (std::nothrow) data_T [new_capacity];
 
     for (size_t i = 0; i < _size; i++)
         new_data[i] = _data[i];
@@ -96,9 +96,9 @@ bvector <data_T> &bvector <data_T> :: operator = (const bvector <data_T> &that)
 template <typename data_T>
 bvector <data_T> &bvector <data_T> :: operator = (bvector &&that) noexcept
 {
-    _size = that._size;
-    _capacity = that._capacity;
-    _data = that._data;
+    std::swap (_size, that._size);
+    std::swap (_capacity, that._capacity);
+    std::swap (_data, that._data);
 
 }
 
