@@ -8,10 +8,11 @@ data_T barray <data_T> :: operator [] (double index)
 {
     if (index >= 0 && index < _capacity)
     {
-        double frac = index - (int)index;
-        double left = (index - frac);
-        double right = left + 1;
-        return _data[(int)left] * (1 - frac) + _data[(int)right] * frac;
+        int     P0 = (int)index;
+        int     P1 = P0 + 1;
+        double  t = index - P0;
+        return  _data[P0] * (1 - t)
+                + _data[P1] * t;
     }
 }
 

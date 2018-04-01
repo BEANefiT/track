@@ -3,7 +3,7 @@
 
 #include <new>
 #include "barray.h"
-#include "straight.hpp"
+#include "bezier_2.hpp"
 
 template <typename data_T>
 barray <data_T> :: barray (size_t capacity):
