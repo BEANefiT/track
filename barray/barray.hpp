@@ -1,9 +1,8 @@
 #ifndef __BARRAY_HPP__
 #define __BARRAY_HPP__
 
-#include <new>
 #include "barray.h"
-#include "bezier_2.hpp"
+#include "catmull-rom.hppg"
 
 template <typename data_T>
 barray <data_T> :: barray (size_t capacity):

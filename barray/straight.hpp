@@ -6,6 +6,9 @@
 template <typename data_T>
 data_T barray <data_T> :: operator [] (double index)
 {
+    if (index == 0 || index == _size - 1)
+        return _data[(int)index];
+
     if (index >= 0 && index < _capacity)
     {
         int     P0 = index;
