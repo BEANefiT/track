@@ -21,7 +21,7 @@ template <typename data_T>
 bstack <data_T> :: ~bstack ()
 {
     if (_data != nullptr)
-        delete _data;
+        delete [] _data;
 };
 
 template <typename data_T>
@@ -66,7 +66,7 @@ bool bstack <data_T> :: _resize (size_t new_sz)
         newdata [i] = _data [i];
 
     _capacity = new_sz;
-    delete _data;
+    delete [] _data;
     _data = newdata;
 }
 

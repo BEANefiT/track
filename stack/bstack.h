@@ -20,8 +20,6 @@ public:
 
     bool    check ();
 
-    void    dump ();
-
 private:
     size_t  _size;
     size_t  _capacity;
