@@ -12,7 +12,7 @@ data_T barray <data_T> :: operator [] (double index)
         int     P1 = P0 + 1;
         int     P2 = P0 + 2;
         double  t = (index - P0) / 2;
-        return  _data[P0] * ((1 - t) * (1 - t))
+        return    _data[P0] * ((1 - t) * (1 - t))
                 + _data[P1] * (2 * t * (1 - t))
                 + _data[P2]*t*t;
     }
