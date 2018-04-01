@@ -2,7 +2,7 @@
 #define __BARRAY_HPP__
 
 #include "barray.h"
-#include "catmull-rom.hppg"
+#include "catmull-rom.hpp"
 
 template <typename data_T>
 barray <data_T> :: barray (size_t capacity):
