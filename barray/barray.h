@@ -2,6 +2,7 @@
 #define __BARRAY_H__
 
 #include <cstddef>
+#include <cmath>
 
 template <typename data_T>
 

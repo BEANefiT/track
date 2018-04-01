@@ -13,10 +13,10 @@ data_T barray <data_T> :: operator [] (double index)
         int     P2 = P0 + 2;
         int     P3 = P0 + 3;
         double  t = (index - P0) / 3;
-        return    _data[P0] * (1 - t) * (1 - t) * (1 - t)
-                + _data[P1] * 3 * t * (1 - t) * (1 - t)
-                + _data[P2] * 3 * t * t * (1 - t)
-                + _data[P3] * t * t * t;
+        return    _data[P0] * pow (1 - t, 3)
+                + _data[P1] * 3 * t * pow (1 - t, 2)
+                + _data[P2] * 3 * pow (t, 2) * (1 - t)
+                + _data[P3] * pow (t, 3);
 
     }
 }
