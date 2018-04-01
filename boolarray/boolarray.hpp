@@ -38,6 +38,13 @@ boolarray :: ~boolarray ()
     delete [] _data;
 }
 
-
+bool boolarray :: operator [] (int index)
+{
+    if (index >= 0 && index < _size)
+    {
+        int tmp = index / 8;
+        return  (_data[tmp] << (7 - index % 8)) % 2;
+    }
+}
 
 #endif //__BOOLARRAY_HPP__

@@ -12,7 +12,7 @@ public:
     boolarray (boolarray &&that) noexcept;
     ~boolarray ();
 
-
+    bool operator [] (int index);
 
 private:
     size_t      _arr_sz;
