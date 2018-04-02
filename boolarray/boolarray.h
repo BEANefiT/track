@@ -14,6 +14,8 @@ public:
 
     bool operator [] (int index);
 
+
+
 private:
     size_t      _arr_sz;
     size_t      _capacity;
