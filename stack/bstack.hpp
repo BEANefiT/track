@@ -1,5 +1,3 @@
-//#ifdef __STACK_BSTACK_H__
-
 #ifndef __STACK_BSTACK_HPP__
 #define __STACK_BSTACK_HPP__
 
