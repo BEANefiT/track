@@ -44,8 +44,16 @@ bstack <data_T> :: bstack (size_t capacity):
         _capacity (capacity),
         _size (0)
 {
+<<<<<<< HEAD
     _data = new data_T [_capacity];
 }
+=======
+    b_log _log;
+    _size = 0;
+    _capacity = 0;
+    _data = new (std::nothrow) data_T [_capacity];
+};
+>>>>>>> log constructor into stack
 
 template <typename data_T>
 bstack <data_T> :: ~bstack ()

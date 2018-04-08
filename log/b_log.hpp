@@ -11,7 +11,7 @@ public:
     b_log();
     ~b_log();
 
-    void log (const char* msg, ...);
+    void print (const char* msg, ...);
 
 private:
     FILE* _logfile;
@@ -27,7 +27,7 @@ b_log :: ~b_log ()
     fclose (_logfile);
 }
 
-void b_log :: log (const char *msg, ...)
+void b_log :: print (const char *msg, ...)
 {
     va_list args;
     va_start (args, msg);
