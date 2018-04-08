@@ -26,7 +26,7 @@ private:
 
     data_T*  _data;
 
-    bool    _resize (size_t new_sz);
+    void    _resize (size_t new_sz);
 };
 
 #include "bstack.hpp"
