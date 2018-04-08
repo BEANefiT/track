@@ -8,8 +8,8 @@ class b_log
 {
 public:
 
-    b_log();
-    ~b_log();
+    b_log ();
+    ~b_log ();
 
     void print (const char* msg, ...);
 
@@ -33,6 +33,7 @@ void b_log :: print (const char *msg, ...)
     va_start (args, msg);
     vfprintf (_logfile, msg, args);
     va_end (args);
+    fflush (_logfile);
 }
 
 #endif //__B_LOG_HPP__

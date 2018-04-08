@@ -11,13 +11,13 @@ template <typename data_T>
 class bstack
 {
 public:
-    bstack ();
-    explicit bstack (size_t capacity);
+    bstack (b_log *log);
+    explicit bstack (size_t capacity, b_log* log);
     ~bstack ();
 
-    data_T  pop ();
     data_T  top ();
 
+    void    pop ();
     void    push (data_T val);
     void    resize (size_t new_sz);
 
@@ -26,68 +26,73 @@ public:
     bool    check ();
 
 private:
-    size_t  _size;
-    size_t  _capacity;
+    size_t      _size;
+    size_t      _capacity;
 
-    data_T*  _data;
+    data_T*     _data;
+    b_log*      _log;
 };
 
 template <typename data_T>
-bstack <data_T> :: bstack () :
+bstack <data_T> :: bstack (b_log* log):
     _size (0),
     _capacity (0),
-    _data (nullptr)
-{};
+    _data (nullptr),
+    _log (log)
+{
+    _log -> print ("stack construct w/ _capacity = 0\n");
+};
 
 template <typename data_T>
-bstack <data_T> :: bstack (size_t capacity):
+bstack <data_T> :: bstack (size_t capacity, b_log* log):
         _capacity (capacity),
-        _size (0)
+        _size (0),
+        _log (log)
 {
-<<<<<<< HEAD
-    _data = new data_T [_capacity];
-}
-=======
-    b_log _log;
-    _size = 0;
-    _capacity = 0;
+    _log -> print ("stack constructor w/ _capacity = %zd\n", capacity);
     _data = new (std::nothrow) data_T [_capacity];
-};
->>>>>>> log constructor into stack
+
+    if (_data == nullptr)
+    {
+        _log -> print ("cannot allocate mem for stack constr\n");
+        throw ("cannot allocate mem for stack");
+    }
+}
 
 template <typename data_T>
 bstack <data_T> :: ~bstack ()
 {
+    _log -> print ("stack destr\n");
+
     if (_data != nullptr)
         delete [] _data;
 };
 
 template <typename data_T>
-data_T bstack <data_T> :: pop ()
+void bstack <data_T> :: pop ()
 {
     if (_size > 0)
-    {
-        return _data[--_size];
-    }
+        _size--;
+
+    _log -> print ("cannot stack.pop for _sz = 0\n");
 };
 
 template <typename data_T>
 data_T bstack <data_T> :: top ()
 {
     if (_size > 0)
-
         return _data [_size - 1];
+
+    _log -> print ("cannot stack.top() for _sz = 0, return poison val\n");
 };
 
 template <typename data_T>
 void bstack <data_T> :: push (data_T val)
 {
     if (_size >= _capacity)
-
         resize ((_capacity + 1) * 1.4);
 
     _data[_size++] = val;
-
 }
 
 template <typename data_T>
@@ -99,9 +104,21 @@ size_t bstack <data_T> :: size ()
 template <typename data_T>
 void bstack <data_T> :: resize (size_t new_sz)
 {
-    auto newdata = new data_T [new_sz];
+    _log -> print ("stack.resize (%zd)\n", new_sz);
 
-    for (int i = 0; i < _size; i++)
+    auto newdata = new (std::nothrow) data_T [new_sz];
+
+    if (newdata == nullptr)
+    {
+        _log -> print ("cannot allocate mem for stack\n");
+
+        return;
+    }
+
+    if (new_sz < _size)
+        _log -> print ("loss of data, _new_sz < _size\n");
+
+    for (int i = 0; i < std::min (_size, new_sz); i++)
         newdata [i] = _data [i];
 
     _capacity = new_sz;
