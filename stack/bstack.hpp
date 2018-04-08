@@ -12,12 +12,14 @@ class bstack
 {
 public:
     bstack ();
+    explicit bstack (size_t capacity);
     ~bstack ();
 
     data_T  pop ();
     data_T  top ();
 
-    bool    push (data_T val);
+    void    push (data_T val);
+    void    resize (size_t new_sz);
 
     size_t  size ();
 
@@ -28,8 +30,6 @@ private:
     size_t  _capacity;
 
     data_T*  _data;
-
-    void    _resize (size_t new_sz);
 };
 
 template <typename data_T>
@@ -38,6 +38,14 @@ bstack <data_T> :: bstack () :
     _capacity (0),
     _data (nullptr)
 {};
+
+template <typename data_T>
+bstack <data_T> :: bstack (size_t capacity):
+        _capacity (capacity),
+        _size (0)
+{
+    _data = new data_T [_capacity];
+}
 
 template <typename data_T>
 bstack <data_T> :: ~bstack ()
@@ -64,11 +72,11 @@ data_T bstack <data_T> :: top ()
 };
 
 template <typename data_T>
-bool bstack <data_T> :: push (data_T val)
+void bstack <data_T> :: push (data_T val)
 {
     if (_size >= _capacity)
 
-        _resize ((_capacity + 1) * 1.4);
+        resize ((_capacity + 1) * 1.4);
 
     _data[_size++] = val;
 
@@ -81,9 +89,9 @@ size_t bstack <data_T> :: size ()
 }
 
 template <typename data_T>
-void bstack <data_T> :: _resize (size_t new_sz)
+void bstack <data_T> :: resize (size_t new_sz)
 {
-    data_T* newdata = new data_T [new_sz];
+    auto newdata = new data_T [new_sz];
 
     for (int i = 0; i < _size; i++)
         newdata [i] = _data [i];
