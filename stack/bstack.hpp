@@ -72,7 +72,8 @@ void bstack <data_T> :: pop ()
     if (_size > 0)
         _size--;
 
-    _log -> print ("cannot stack.pop for _sz = 0\n");
+    else
+        _log -> print ("cannot stack.pop() for _sz = 0\n");
 };
 
 template <typename data_T>
