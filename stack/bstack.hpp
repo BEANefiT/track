@@ -3,25 +3,25 @@
 
 #include <iostream>
 #include <cstddef>
+#include <cassert>
+#include "../log/b_log.hpp"
+
 
 template <typename data_T>
-
 class bstack
 {
 public:
-    bstack (b_log *log);
-    explicit bstack (size_t capacity, b_log* log);
+    explicit bstack (b_log *log);
+    bstack (size_t capacity, b_log* log);
     ~bstack ();
 
     data_T  top ();
 
     void    pop ();
     void    push (data_T val);
-    void    resize (size_t new_sz);
+    bool    resize (size_t new_sz);
 
     size_t  size ();
-
-    bool    check ();
 
 private:
     size_t      _size;
@@ -38,29 +38,30 @@ bstack <data_T> :: bstack (b_log* log):
     _data (nullptr),
     _log (log)
 {
-    _log -> print ("stack construct w/ _capacity = 0\n");
+    printlog ( "stack construct, _capacity = 0\n" );
 };
 
 template <typename data_T>
-bstack <data_T> :: bstack (size_t capacity, b_log* log):
+bstack <data_T>:: bstack (size_t capacity, b_log* log):
         _capacity (capacity),
         _size (0),
         _log (log)
 {
-    _log -> print ("stack constructor w/ _capacity = %zd\n", capacity);
+    printlog ("stack constructor, _capacity = %zd\n", capacity);
     _data = new (std::nothrow) data_T [_capacity];
 
     if (_data == nullptr)
     {
-        _log -> print ("cannot allocate mem for stack constr\n");
-        throw ("cannot allocate mem for stack");
+        printlog ("%%s: ERROR:\t\tcan\'t alloc mem, stack constr\n\n\n");//, __LINE__);
+
+
     }
 }
 
 template <typename data_T>
 bstack <data_T> :: ~bstack ()
 {
-    _log -> print ("stack destr\n");
+    printlog ("stack destr\n");
 
     if (_data != nullptr)
         delete [] _data;
@@ -73,7 +74,7 @@ void bstack <data_T> :: pop ()
         _size--;
 
     else
-        _log -> print ("cannot stack.pop() for _sz = 0\n");
+        printlog ("%%s: ERROR:\t\tcannot pop for _sz = 0\n\n\n");//, __LINE__);
 };
 
 template <typename data_T>
@@ -82,15 +83,19 @@ data_T bstack <data_T> :: top ()
     if (_size > 0)
         return _data [_size - 1];
 
-    _log -> print ("cannot stack.top() for _sz = 0, return poison val\n");
+    printlog ("ERROR: cant top() for _sz = 0, return poison val\n\n\n");
 };
 
 template <typename data_T>
 void bstack <data_T> :: push (data_T val)
 {
     if (_size >= _capacity)
-        resize ((_capacity + 1) * 1.4);
+        if (resize ((_capacity + 1) * 2))
+        {
+            printlog ("ERROR: cant push()\n\n\n");
 
+            return;
+        }
     _data[_size++] = val;
 }
 
@@ -101,21 +106,24 @@ size_t bstack <data_T> :: size ()
 }
 
 template <typename data_T>
-void bstack <data_T> :: resize (size_t new_sz)
+bool bstack <data_T> :: resize (size_t new_sz)
 {
-    _log -> print ("stack.resize (%zd)\n", new_sz);
+    printlog ("\'%zd\' -> \'%zd\')\n", _capacity, new_sz);
 
     auto newdata = new (std::nothrow) data_T [new_sz];
 
     if (newdata == nullptr)
     {
-        _log -> print ("cannot allocate mem for stack\n");
+        printlog ("ERROR: cant alloc mem for stack\n\n\n");
 
-        return;
+        return 1;
     }
 
     if (new_sz < _size)
-        _log -> print ("loss of data, _new_sz < _size\n");
+    {
+        _size = new_sz;
+        printlog ("loss of data, _new_sz < _size\n\n");
+    }
 
     for (int i = 0; i < std::min (_size, new_sz); i++)
         newdata [i] = _data [i];
@@ -123,6 +131,7 @@ void bstack <data_T> :: resize (size_t new_sz)
     _capacity = new_sz;
     delete [] _data;
     _data = newdata;
+    return 0;
 }
 
 
