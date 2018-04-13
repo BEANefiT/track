@@ -15,9 +15,18 @@ public:
     {
     public:
         void         fill (data_T val, blist_elem* nxt, blist_elem* prv);
-        data_T       get_elem ();
-        blist_elem*  get_next();
-        blist_elem*  get_prev();
+        data_T       get_elem ()
+        {
+            return elem;
+        }
+        blist_elem*  get_next()
+        {
+            return next;
+        }
+        blist_elem*  get_prev()
+        {
+            return prev;
+        }
 
     private:
         data_T      elem;
@@ -45,7 +54,7 @@ private:
 };
 
 template <typename data_T>
-blist :: blist (b_log* log):
+blist <data_T> :: blist (b_log* log):
         _size (0),
         _log (log),
         _head (nullptr),
@@ -55,7 +64,7 @@ blist :: blist (b_log* log):
 }
 
 template <typename data_T>
-blist :: ~blist ()
+blist <data_T> :: ~blist ()
 {
     printlog ("list destruct\n");
 
@@ -63,7 +72,7 @@ blist :: ~blist ()
 }
 
 template <typename data_T>
-void blist :: blist_elem :: fill (data_T val, blist_elem* nxt, blist_elem* prv)
+void blist <data_T> :: blist_elem :: fill (data_T val, blist_elem* nxt, blist_elem* prv)
 {
     elem = val;
     next = nxt;
@@ -71,25 +80,7 @@ void blist :: blist_elem :: fill (data_T val, blist_elem* nxt, blist_elem* prv)
 }
 
 template <typename data_T>
-data_T blist :: blist_elem :: get_elem()
-{
-    return elem;
-}
-
-template <typename data_T>
-blist_elem* blist :: blist_elem :: get_next()
-{
-    return next;
-}
-
-template <typename data_T>
-blist_elem* blist :: blist_elem :: get_prev()
-{
-    return prev;
-}
-
-template <typename data_T>
-bool blist :: insert (blist_elem* pos, data_T value)
+bool blist <data_T> :: insert (blist_elem* pos, data_T value)
 {
     if (pos == nullptr)
     {
@@ -160,7 +151,7 @@ bool blist :: insert (blist_elem* pos, data_T value)
 }
 
 template <typename data_T>
-bool blist :: push_back(data_T value)
+bool blist <data_T> :: push_back(data_T value)
 {
     if (_tail == nullptr)
     {
@@ -194,13 +185,14 @@ bool blist :: push_back(data_T value)
 
     tmp -> fill (value, nullptr, _tail);
     _tail -> fill (_tail -> get_elem(), tmp, _tail -> get_prev());
+    _tail = tmp;
     _size++;
 
     return 0;
 }
 
 template <typename data_T>
-bool blist :: push_front (data_T value)
+bool blist <data_T> :: push_front (data_T value)
 {
     if (_head == nullptr)
     {
@@ -233,25 +225,50 @@ bool blist :: push_front (data_T value)
 
     tmp -> fill (value, _head, nullptr);
     _head -> fill (_head -> get_elem(), _head -> get_next(), tmp);
+    _head = tmp;
     _size++;
 
     return 0;
 }
 
 template <typename data_T>
-data_T blist :: back()
+data_T blist <data_T> :: back()
 {
-    return _tail -> get_elem();
+    if (_size > 0)
+    {
+        auto tmp_elem = _tail -> get_elem();
+        auto tmp_tail = _tail -> get_prev();
+
+        delete _tail;
+        _size--;
+        _tail = tmp_tail;
+
+        return tmp_elem;
+    }
+
+    printlog ("ERROR:\t\tcan't back() for _size = 0, returned poison value\n\n\n");
 }
 
 template <typename data_T>
-data_T blist :: front()
+data_T blist <data_T> :: front()
 {
-    return _head -> get_elem();
+    if (_size > 0)
+    {
+        auto tmp_elem = _head -> get_elem();
+        auto tmp_head = _head -> get_next();
+
+        delete _head;
+        _size--;
+        _head = tmp_head;
+
+        return tmp_elem;
+    }
+
+    printlog ("ERROR:\t\tcan't front() for _size = 0, returned poison value\n\n\n");
 }
 
 template <typename data_T>
-data_T blist :: get_elem (size_t pos)
+data_T blist <data_T> :: get_elem (size_t pos)
 {
     if (pos < _size)
     {
@@ -267,10 +284,23 @@ data_T blist :: get_elem (size_t pos)
 }
 
 template <typename data_T>
-size_t blist :: size()
+size_t blist <data_T> :: size()
 {
     return _size;
 }
 
+template <typename data_T>
+void blist <data_T> :: erase()
+{
+    auto tmp = _head;
+    for (int i = 0; i < _size; i++)
+    {
+        auto a = tmp -> get_next();
+
+        delete tmp;
+
+        tmp = a;
+    }
+}
 
 #endif //__BLIST_HPP__
