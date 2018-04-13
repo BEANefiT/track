@@ -31,7 +31,9 @@ public:
 
     data_T  back ();
     data_T  front();
-    data_T  get_elem();
+    data_T  get_elem (size_t pos);
+
+    size_t  size();
 
     void    erase();
 
@@ -94,29 +96,6 @@ bool blist :: insert (blist_elem* pos, data_T value)
         printlog ("ERROR:\t\tpos == nullptr\n\n\n");
 
         return 1;
-    }
-
-    if (!_size)
-    {
-        printlog ("WARNING:\t\t_size = 0, inserting 1st elem\n\n");
-
-        auto tmp = new (std::nothrow) blist_elem;
-
-        if (tmp == nullptr)
-        {
-            printlog ("ERROR:\t\tcan't create an element\n\n\n");
-
-            return 1;
-        }
-
-        tmp -> fill (value, nullptr, nullptr);
-
-        _head = tmp;
-        _tail = tmp;
-
-        _size++;
-
-        return 0;
     }
 
     if (_size == 1)
@@ -220,9 +199,78 @@ bool blist :: push_back(data_T value)
     return 0;
 }
 
+template <typename data_T>
+bool blist :: push_front (data_T value)
+{
+    if (_head == nullptr)
+    {
+        printlog ("WARNING:\t\tpushing 1st element\n\n");
 
+        auto tmp = new (std::nothrow) blist_elem;
 
+        if (tmp == nullptr)
+        {
+            printlog ("ERROR:\t\tcan't create an element\n\n\n");
 
+            return 1;
+        }
+
+        tmp -> fill (value, nullptr, nullptr);
+        _head = tmp;
+        _tail = tmp;
+
+        return 0;
+    }
+
+    auto tmp = new (std::nothrow) blist_elem;
+
+    if (tmp == nullptr)
+    {
+        printlog ("ERROR:\t\tcan't create an element\n\n\n");
+
+        return 1;
+    }
+
+    tmp -> fill (value, _head, nullptr);
+    _head -> fill (_head -> get_elem(), _head -> get_next(), tmp);
+    _size++;
+
+    return 0;
+}
+
+template <typename data_T>
+data_T blist :: back()
+{
+    return _tail -> get_elem();
+}
+
+template <typename data_T>
+data_T blist :: front()
+{
+    return _head -> get_elem();
+}
+
+template <typename data_T>
+data_T blist :: get_elem (size_t pos)
+{
+    if (pos < _size)
+    {
+        auto tmp = _head;
+
+        for (int i = 0; i < pos; i++)
+            tmp = tmp -> get_next();
+
+        return tmp -> get_elem();
+    }
+
+    printlog ("ERROR:\t\tcan't get_elem for pos >= _size\n\n\n");
+}
+
+template <typename data_T>
+size_t blist :: size()
+{
+    return _size;
+}
 
 
 #endif //__BLIST_HPP__
