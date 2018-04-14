@@ -34,18 +34,22 @@ public:
         blist_elem* prev;
     };
 
-    bool    insert (blist_elem* pos, data_T value);
-    bool    insert (size_t index, data_T value);
-    bool    push_back (data_T value);
-    bool    push_front (data_T value);
+    bool        insert (blist_elem* pos, data_T value);
+    bool        insert (size_t index, data_T value);
+    bool        push_back (data_T value);
+    bool        push_front (data_T value);
 
-    data_T  back ();
-    data_T  front();
-    data_T  get_elem (size_t pos);
+    data_T      back ();
+    data_T      front();
+    data_T      get_elem (blist_elem* pos);
+    data_T      get_elem (size_t index);
 
-    size_t  size();
+    blist_elem* get_head();
+    blist_elem* get_tail();
 
-    void    erase();
+    size_t      size();
+
+    void        erase();
 
 private:
     size_t      _size;
@@ -119,16 +123,19 @@ bool blist <data_T> :: insert (blist_elem* pos, data_T value)
         {
             printlog ("ERROR:\t\tcan't create an element\n\n\n");
 
-            tmp -> fill (value, _head, nullptr);
-
-            _head -> fill (_head -> get_elem(), _head -> get_next(), tmp);
-
-            _head = tmp;
-
-            _size++;
-
-            return 0;
+            return 1;
         }
+
+        tmp -> fill (value, _head, nullptr);
+
+        _head -> fill (_head -> get_elem(), _head -> get_next(), tmp);
+
+        _head = tmp;
+
+        _size++;
+
+        return 0;
+
     }
 
     auto tmp = new (std::nothrow) blist_elem;
@@ -294,19 +301,37 @@ data_T blist <data_T> :: front()
 }
 
 template <typename data_T>
-data_T blist <data_T> :: get_elem (size_t pos)
+data_T blist <data_T> :: get_elem (blist_elem* pos)
 {
-    if (pos < _size)
+    return pos -> get_elem();
+}
+
+template <typename data_T>
+data_T blist <data_T> :: get_elem (size_t index)
+{
+    if (index < _size)
     {
         auto tmp = _head;
 
-        for (int i = 0; i < pos; i++)
+        for (int i = 0; i < index; i++)
             tmp = tmp -> get_next();
 
         return tmp -> get_elem();
     }
 
     printlog ("ERROR:\t\tcan't get_elem for pos >= _size\n\n\n");
+}
+
+template <typename data_T>
+typename blist<data_T>::blist_elem* blist <data_T> :: get_head()
+{
+    return _head;
+}
+
+template <typename data_T>
+typename blist<data_T>::blist_elem* blist <data_T> :: get_tail()
+{
+    return _tail;
 }
 
 template <typename data_T>
