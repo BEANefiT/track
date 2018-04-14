@@ -35,6 +35,7 @@ public:
     };
 
     bool    insert (blist_elem* pos, data_T value);
+    bool    insert (size_t index, data_T value);
     bool    push_back (data_T value);
     bool    push_front (data_T value);
 
@@ -141,13 +142,38 @@ bool blist <data_T> :: insert (blist_elem* pos, data_T value)
 
     tmp -> fill (value, pos, pos -> get_prev());
 
-    pos -> fill (pos -> get_elem(), pos -> get_next(), tmp);
-
     pos -> get_prev() -> fill (pos -> get_prev() -> get_elem(), tmp, pos -> get_prev() -> get_prev());
+
+    pos -> fill (pos -> get_elem(), pos -> get_next(), tmp);
 
     _size++;
 
     return 0;
+}
+
+template <typename data_T>
+bool blist <data_T> :: insert (size_t index, data_T value)
+{
+    if (index >= _size)
+    {
+        printlog ("ERROR:\t\tindex >= _size\n\n\n");
+
+        return 1;
+    }
+
+    auto tmp = _head;
+
+    for (int i = 0; i < index; i++)
+        tmp = tmp -> get_next();
+
+    if (tmp == nullptr)
+    {
+        printlog ("ERROR:\t\ttmp == nullptr\n\n\n");
+
+        return 1;
+    }
+
+    insert (tmp, value);
 }
 
 template <typename data_T>
