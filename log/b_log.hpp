@@ -37,6 +37,8 @@ void b_log :: print (const char* funcname, const char *msg, ...)
     fflush (_logfile);
 }
 
+auto _log = new b_log;
+
 #define printlog( ... )                              \
     _log -> print (__PRETTY_FUNCTION__, __VA_ARGS__);
 

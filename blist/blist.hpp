@@ -4,25 +4,30 @@
 #include <cstddef>
 #include "../log/b_log.hpp"
 
+extern b_log* _log;
+
 template <typename data_T>
 class blist
 {
 public:
-    explicit blist (b_log* log);
+    blist ();
     ~blist();
 
     class blist_elem
     {
     public:
         void         fill (data_T val, blist_elem* nxt, blist_elem* prv);
+
         data_T       get_elem ()
         {
             return elem;
         }
+
         blist_elem*  get_next()
         {
             return next;
         }
+
         blist_elem*  get_prev()
         {
             return prev;
@@ -53,25 +58,23 @@ public:
 
 private:
     size_t      _size;
-    b_log*      _log;
     blist_elem* _head;
     blist_elem* _tail;
 };
 
 template <typename data_T>
-blist <data_T> :: blist (b_log* log):
+blist <data_T> :: blist ():
         _size (0),
-        _log (log),
         _head (nullptr),
         _tail (nullptr)
 {
-    printlog ( "list construct\n" );
+    printlog ("list constr\n");
 }
 
 template <typename data_T>
 blist <data_T> :: ~blist ()
 {
-    printlog ("list destruct\n");
+    //printlog ("list destruct\n");
 
     erase();
 }
