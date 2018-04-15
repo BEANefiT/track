@@ -87,6 +87,25 @@ void blist <data_T> :: blist_elem :: fill (data_T val, blist_elem* nxt, blist_el
 template <typename data_T>
 bool blist <data_T> :: insert (blist_elem* pos, data_T value)
 {
+    if (_size == 0)
+    {
+        auto tmp = new (std::nothrow) blist_elem;
+
+        if (tmp == nullptr)
+        {
+            printlog ("ERROR:\t\tcan't create an element\n\n\n");
+
+            return 1;
+        }
+
+        tmp -> fill (value, nullptr, nullptr);
+        _head = tmp;
+        _tail = tmp;
+
+        _size++;
+
+        return 0;
+    }
     if (pos == nullptr)
     {
         printlog ("ERROR:\t\tpos == nullptr\n\n\n");
@@ -161,6 +180,11 @@ bool blist <data_T> :: insert (blist_elem* pos, data_T value)
 template <typename data_T>
 bool blist <data_T> :: insert (size_t index, data_T value)
 {
+    if (_size == 0)
+    {
+        insert (nullptr, value);
+    }
+
     if (index >= _size)
     {
         printlog ("ERROR:\t\tindex >= _size\n\n\n");
