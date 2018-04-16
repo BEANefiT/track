@@ -2,9 +2,6 @@
 #define __BLIST_HPP__
 
 #include <cstddef>
-#include "../log/b_log.hpp"
-
-extern b_log* _log;
 
 template <typename data_T>
 class blist
@@ -67,15 +64,11 @@ blist <data_T> :: blist ():
         _size (0),
         _head (nullptr),
         _tail (nullptr)
-{
-    printlog ("list constr\n");
-}
+{}
 
 template <typename data_T>
 blist <data_T> :: ~blist ()
 {
-    //printlog ("list destruct\n");
-
     erase();
 }
 
@@ -96,8 +89,6 @@ bool blist <data_T> :: insert (blist_elem* pos, data_T value)
 
         if (tmp == nullptr)
         {
-            printlog ("ERROR:\t\tcan't create an element\n\n\n");
-
             return 1;
         }
 
@@ -111,8 +102,6 @@ bool blist <data_T> :: insert (blist_elem* pos, data_T value)
     }
     if (pos == nullptr)
     {
-        printlog ("ERROR:\t\tpos == nullptr\n\n\n");
-
         return 1;
     }
 
@@ -122,8 +111,6 @@ bool blist <data_T> :: insert (blist_elem* pos, data_T value)
 
         if (tmp == nullptr)
         {
-            printlog ("ERROR:\t\tcan't create an element\n\n\n");
-
             return 1;
         }
 
@@ -143,8 +130,6 @@ bool blist <data_T> :: insert (blist_elem* pos, data_T value)
 
         if (tmp == nullptr)
         {
-            printlog ("ERROR:\t\tcan't create an element\n\n\n");
-
             return 1;
         }
 
@@ -164,8 +149,6 @@ bool blist <data_T> :: insert (blist_elem* pos, data_T value)
 
     if (tmp == nullptr)
     {
-        printlog ("ERROR:\t\tcan't create an element\n\n\n");
-
         return 1;
     }
 
@@ -190,8 +173,6 @@ bool blist <data_T> :: insert (size_t index, data_T value)
 
     if (index >= _size)
     {
-        printlog ("ERROR:\t\tindex >= _size\n\n\n");
-
         return 1;
     }
 
@@ -202,8 +183,6 @@ bool blist <data_T> :: insert (size_t index, data_T value)
 
     if (tmp == nullptr)
     {
-        printlog ("ERROR:\t\ttmp == nullptr\n\n\n");
-
         return 1;
     }
 
@@ -215,14 +194,10 @@ bool blist <data_T> :: push_back(data_T value)
 {
     if (_tail == nullptr)
     {
-        printlog ("WARNING:\t\tpushing 1st elem\n");
-
         auto tmp = new (std::nothrow) blist_elem;
 
         if (tmp == nullptr)
         {
-            printlog ("ERROR:\t\tcan't create an element\n\n\n");
-
             return 1;
         }
 
@@ -238,8 +213,6 @@ bool blist <data_T> :: push_back(data_T value)
 
     if (tmp == nullptr)
     {
-        printlog ("ERROR:\t\tcan't create an element\n\n\n");
-
         return 1;
     }
 
@@ -256,14 +229,10 @@ bool blist <data_T> :: push_front (data_T value)
 {
     if (_head == nullptr)
     {
-        printlog ("WARNING:\t\tpushing 1st element\n\n");
-
         auto tmp = new (std::nothrow) blist_elem;
 
         if (tmp == nullptr)
         {
-            printlog ("ERROR:\t\tcan't create an element\n\n\n");
-
             return 1;
         }
 
@@ -278,8 +247,6 @@ bool blist <data_T> :: push_front (data_T value)
 
     if (tmp == nullptr)
     {
-        printlog ("ERROR:\t\tcan't create an element\n\n\n");
-
         return 1;
     }
 
@@ -296,17 +263,8 @@ data_T blist <data_T> :: back()
 {
     if (_size > 0)
     {
-        auto tmp_elem = _tail -> get_elem();
-        auto tmp_tail = _tail -> get_prev();
-
-        delete _tail;
-        _size--;
-        _tail = tmp_tail;
-
-        return tmp_elem;
+        return _tail -> get_elem();
     }
-
-    printlog ("ERROR:\t\tcan't back() for _size = 0, returned poison value\n\n\n");
 }
 
 template <typename data_T>
@@ -314,17 +272,8 @@ data_T blist <data_T> :: front()
 {
     if (_size > 0)
     {
-        auto tmp_elem = _head -> get_elem();
-        auto tmp_head = _head -> get_next();
-
-        delete _head;
-        _size--;
-        _head = tmp_head;
-
-        return tmp_elem;
+        return _head -> get_elem();
     }
-
-    printlog ("ERROR:\t\tcan't front() for _size = 0, returned poison value\n\n\n");
 }
 
 template <typename data_T>
@@ -345,8 +294,6 @@ data_T blist <data_T> :: get_elem (size_t index)
 
         return tmp -> get_elem();
     }
-
-    printlog ("ERROR:\t\tcan't get_elem for pos >= _size\n\n\n");
 }
 
 template <typename data_T>
