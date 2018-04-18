@@ -4,34 +4,28 @@
 class bexcept: public std::exception
 {
 public:
-    bexcept (const char*, size_t, bexcept*);
+    bexcept (const char*, bexcept*);
 
-    void     what();
-    size_t   count();
+    virtual const char*     what() const noexcept override;
+    size_t                  count();
+    void                    dump ();
+    void                    set_count (size_t);
 
 private:
     bexcept*        _prev;
-    const char*     _msg;
+    const char*     _what;
     size_t          _count;
 };
 
-bexcept :: bexcept (const char* str, size_t count, bexcept* prev):
+bexcept :: bexcept (const char* str, bexcept* prev):
         _prev (prev),
-        _count (count),
-        _msg (str)
+        _count (0),
+        _what (str)
 {}
 
-void bexcept :: what()
+const char* bexcept :: what() const noexcept
 {
-    for (size_t i = 0; i < _count; i++)
-        std::cout << "\t\t";
-
-    std::cout << "In:\t" << _msg << '\n';
-
-    if (_prev)
-        _prev -> what();
-
-    delete this;
+    return _what;
 }
 
 size_t bexcept :: count()
@@ -39,8 +33,27 @@ size_t bexcept :: count()
     return _count;
 }
 
+void bexcept :: set_count (size_t count)
+{
+    _count = count;
+}
+
+void bexcept :: dump ()
+{
+    for (size_t i = 0; i < _count; i++)
+        std::cout << '\t';
+
+    std::cout << _what << '\n';
+
+    _prev -> set_count (_count + 1);
+
+    _prev -> dump();
+
+    delete this;
+}
+
 #define bexcept_jump_next( msg )               \
-    auto e2 = new bexcept (msg, e -> count() + 1, e);    \
+    auto e2 = new bexcept (msg, e);            \
     throw (e2);
 
 
