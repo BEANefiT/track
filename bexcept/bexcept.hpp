@@ -4,7 +4,8 @@
 class bexcept: public std::exception
 {
 public:
-    bexcept (const char*, bexcept*);
+    bexcept (const char* msg, const char* file, const char* func, const int line, bexcept* prev);
+    bexcept (const char* file, const char* func, const int line, bexcept* prev);
 
     virtual const char*     what() const noexcept override;
     size_t                  count();
@@ -14,13 +15,26 @@ public:
 private:
     bexcept*        _prev;
     const char*     _what;
+    const char*     _file;
+    const char*     _func;
+    const int       _line;
     size_t          _count;
 };
 
-bexcept :: bexcept (const char* str, bexcept* prev):
+bexcept :: bexcept (const char* msg, const char* file, const char* func, const int line, bexcept* prev):
         _prev (prev),
-        _count (0),
-        _what (str)
+        _what (msg),
+        _file (file),
+        _func (func),
+        _line (line)
+{}
+
+bexcept :: bexcept (const char* file, const char* func, const int line, bexcept* prev):
+        _prev (prev),
+        _what (nullptr),
+        _file (file),
+        _func (func),
+        _line (line)
 {}
 
 const char* bexcept :: what() const noexcept
@@ -43,19 +57,29 @@ void bexcept :: dump ()
     for (size_t i = 0; i < _count; i++)
         std::cout << '\t';
 
-    std::cout << _what << '\n';
+    std::cout << "in file \'" << _file << "\' in func \'" << _func << "\' in line \'" << _line << '\'';
 
-    _prev -> set_count (_count + 1);
+    if (_what)
+        std::cout << " \"" << _what <<'\"';
 
-    _prev -> dump();
+    std::cout << '\n';
+
+    if (_prev)
+    {
+        _prev->set_count(_count + 1);
+
+        _prev->dump();
+    }
 
     delete this;
 }
 
-#define bexcept_jump_next( msg )               \
-    auto e2 = new bexcept (msg, e);            \
-    throw (e2);
+#define bexcept_throw( msg, prev )                                          \
+    auto exception = new bexcept (msg, __FILE__, __func__, __LINE__, prev); \
+    throw (exception);
 
-
+#define bexcept_throw_without_msg( prev )                                   \
+    auto exception = new bexcept (__FILE__, __func__, __LINE__, prev);      \
+    throw (exception)
 
 #endif //__BEXCEPT_HPP__
