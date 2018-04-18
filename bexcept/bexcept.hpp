@@ -74,12 +74,16 @@ void bexcept :: dump ()
     delete this;
 }
 
-#define bexcept_throw( msg, prev )                                          \
-    auto exception = new bexcept (msg, __FILE__, __func__, __LINE__, prev); \
+#define bexcept_throw( msg )                                                    \
+    auto exception = new bexcept (msg, __FILE__, __func__, __LINE__, nullptr);  \
     throw (exception);
 
 #define bexcept_throw_without_msg( prev )                                   \
     auto exception = new bexcept (__FILE__, __func__, __LINE__, prev);      \
     throw (exception)
+
+#define bexcept_throw_forward( msg, prev )                                  \
+    auto exception = new bexcept (msg, __FILE__, __func__, __LINE__, prev); \
+    throw (exception);
 
 #endif //__BEXCEPT_HPP__

@@ -101,7 +101,7 @@ bool blist <data_T> :: insert (blist_elem* pos, data_T value)
 {
     if (_size != 0 && pos == nullptr)
     {
-        bexcept_throw ("cannot insert before pos == nullptr", nullptr);
+        bexcept_throw ("cannot insert before pos == nullptr");
     }
 
     if (pos == _head)
@@ -117,7 +117,7 @@ bool blist <data_T> :: insert (blist_elem* pos, data_T value)
 
     if (tmp == nullptr)
     {
-        bexcept_throw ("cannot create an element", nullptr);
+        bexcept_throw ("cannot create an element");
     }
 
     if (_size == 0)
@@ -157,7 +157,7 @@ bool blist <data_T> :: insert (size_t index, data_T value)
 
     if (index >= _size)
     {
-        bexcept_throw ("cannot insert(), because index >= _size", nullptr);
+        bexcept_throw ("cannot insert(), because index >= _size");
     }
 
     auto tmp = _head;
@@ -166,7 +166,7 @@ bool blist <data_T> :: insert (size_t index, data_T value)
     {
         if (tmp == nullptr)
         {
-            bexcept_throw ("element with this index does not exist", nullptr);
+            bexcept_throw ("element with this index does not exist");
         }
 
         tmp = tmp -> get_next();
@@ -182,7 +182,7 @@ bool blist <data_T> :: push_back(data_T value)
 
     if (tmp == nullptr)
     {
-        bexcept_throw ("cannot create an element", nullptr);
+        bexcept_throw ("cannot create an element");
     }
 
     if (_tail == nullptr)
@@ -208,7 +208,7 @@ bool blist <data_T> :: push_front (data_T value)
 
     if (tmp == nullptr)
     {
-        bexcept_throw ("cannot create an element", nullptr);
+        bexcept_throw ("cannot create an element");
     }
 
     if (_head == nullptr)
@@ -234,13 +234,13 @@ data_T blist <data_T> :: back()
     {
         if (_tail == nullptr)
         {
-            bexcept_throw ("_tail == nullptr", nullptr);
+            bexcept_throw ("_tail == nullptr");
         }
 
         return _tail -> get_elem();
     }
 
-    bexcept_throw ("blist is empty", nullptr);
+    bexcept_throw ("blist is empty");
 }
 
 template <typename data_T>
@@ -250,13 +250,13 @@ data_T blist <data_T> :: front()
     {
         if (_head == nullptr)
         {
-            bexcept_throw ("_head == nullptr", nullptr);
+            bexcept_throw ("_head == nullptr");
         }
 
         return _head -> get_elem();
     }
 
-    bexcept_throw ("blist is empty", nullptr);
+    bexcept_throw ("blist is empty");
 }
 
 template <typename data_T>
@@ -268,7 +268,7 @@ data_T blist <data_T> :: get_elem (size_t index)
 
         if (tmp == nullptr)
         {
-            bexcept_throw ("element with this index does not exist", nullptr);
+            bexcept_throw ("element with this index does not exist");
         }
 
         for (int i = 0; i < index; i++)
@@ -277,14 +277,14 @@ data_T blist <data_T> :: get_elem (size_t index)
 
             if (tmp == nullptr)
             {
-                bexcept_throw ("element with this index does not exist", nullptr);
+                bexcept_throw ("element with this index does not exist");
             }
         }
 
         return tmp -> get_elem();
     }
 
-    bexcept_throw ("index >= size", nullptr);
+    bexcept_throw ("index >= size");
 }
 
 template <typename data_T>
@@ -326,12 +326,12 @@ bool blist <data_T> :: rm_elem (blist_elem* pos)
 {
     if (pos == nullptr)
     {
-        bexcept_throw ("cannot remove not existing elem", nullptr);
+        bexcept_throw ("cannot remove not existing elem");
     }
 
     if (_size == 0)
     {
-        bexcept_throw ("blist is empty", nullptr);
+        bexcept_throw ("blist is empty");
     }
 
     auto tmp_l = pos -> get_prev();
