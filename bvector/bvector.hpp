@@ -201,6 +201,8 @@ public:
         char*   arr;
         int     shift;
 
+        proxy_t()   = delete;
+
         proxy_t(char* ptr, int sh):
             arr (ptr),
             shift (sh)
@@ -208,7 +210,13 @@ public:
 
         operator bool()
         {
-            return (bool) ((*arr & 1) << shift);
+            auto tmp = (bool) (*arr & (1 << (7 - shift)));
+            return tmp;
+        }
+
+        proxy_t &operator= (bool value)
+        {
+            *arr = (*arr & (~(1 << shift))) | (value << shift);
         }
     };
 
@@ -335,7 +343,9 @@ void bvector <bool> :: push_back (const bool &value)
         catch (bexcept* e){ bexcept_throw_without_msg (e); }
     }
 
-    _data [_size / 8] |= (value << (7 - (_size % 8)));
+    auto a = _data [_size / 8];
+
+    _data [_size / 8] = (_data [_size / 8] & (~ (1 << (7 - (_size % 8))))) | (value << (7 - (_size % 8)));
 
     _size++;
 }
@@ -347,7 +357,7 @@ bool bvector <bool> :: pop_back ()
         bexcept_throw ("bvector is empty");
     }
 
-    return (bool) (_data [(_size - 1) / 8] & (1 >> ((8 - (_size-- % 8)) % 8)));
+    return (bool) (_data [(_size - 1) / 8] & (1 << (((8 - (_size-- % 8))) % 8)));
 }
 
 bvector <bool> :: proxy_t bvector <bool> :: operator[] (size_t index)
@@ -357,7 +367,9 @@ bvector <bool> :: proxy_t bvector <bool> :: operator[] (size_t index)
         bexcept_throw ("index >= _capacity");
     }
 
-    return proxy_t (& (_data [--_size / 8]), _size % 8);
+    auto tmp = proxy_t (_data + index / 8, (index) % 8);
+
+    return tmp;
 }
 
 bvector<bool> &bvector <bool> :: operator= (const bvector &that)
