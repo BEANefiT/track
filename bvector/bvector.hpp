@@ -25,8 +25,8 @@ public:
 
 private:
 
-    size_t      _size;
     size_t      _capacity;
+    size_t      _size;
     data_T*     _data;
 };
 
@@ -210,13 +210,12 @@ public:
 
         operator bool()
         {
-            auto tmp = (bool) (*arr & (1 << (7 - shift)));
-            return tmp;
+            return (bool) (*arr & (1 << (7 - shift)));
         }
 
         proxy_t &operator= (bool value)
         {
-            *arr = (*arr & (~(1 << shift))) | (value << shift);
+            *arr = (*arr & (~(1 << (7 - shift)))) | (value << (7 - shift));
         }
     };
 
@@ -237,8 +236,8 @@ public:
 
 private:
 
-    size_t      _size;
     size_t      _capacity;
+    size_t      _size;
     char*       _data;
 };
 
@@ -250,7 +249,7 @@ bvector <bool> :: bvector():
 
 bvector <bool> :: bvector (size_t capacity):
         _size (0),
-        _capacity (8 * (capacity / 8 + (capacity % 8) / (capacity % 8)))
+        _capacity (8 * (capacity / 8 + (bool)(capacity % 8)))
 {
     _data = new (std::nothrow) char [_capacity / 8];
 
@@ -276,7 +275,7 @@ bvector <bool> :: bvector (const bvector &that):
 }
 
 bvector <bool> :: bvector (size_t capacity, const bool &value):
-        _capacity (8 * (capacity / 8 + (capacity % 8) / (capacity % 8))),
+        _capacity (8 * (capacity / 8 + (bool)(capacity % 8))),
         _size (_capacity)
 {
     _data = new (std::nothrow) char [_capacity / 8];
@@ -288,7 +287,7 @@ bvector <bool> :: bvector (size_t capacity, const bool &value):
 
     if (value == 0)
         for (int i = 0; i < _capacity / 8; i++)
-            _data [i] = 0;
+            _data [i] = '\0';
 
     if (value == 1)
         for (int i = 0; i < _capacity / 8; i++)
@@ -367,9 +366,10 @@ bvector <bool> :: proxy_t bvector <bool> :: operator[] (size_t index)
         bexcept_throw ("index >= _capacity");
     }
 
-    auto tmp = proxy_t (_data + index / 8, (index) % 8);
+    if (index >= _size)
+        _size = index + 1;
 
-    return tmp;
+    return proxy_t (_data + index / 8, (index) % 8);
 }
 
 bvector<bool> &bvector <bool> :: operator= (const bvector &that)
