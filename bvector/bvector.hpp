@@ -360,5 +360,30 @@ bvector <bool> :: proxy_t bvector <bool> :: operator[] (size_t index)
     return proxy_t (& (_data [--_size / 8]), _size % 8);
 }
 
+bvector<bool> &bvector <bool> :: operator= (const bvector &that)
+{
+    try
+    {
+        bvector <bool> tmp (that);
+        swap (tmp);
+    }
+
+    catch (bexcept *e)
+    {
+        bexcept_throw_without_msg (e);
+    }
+}
+
+bvector <bool> &bvector <bool> :: operator= (bvector &&that) noexcept
+{
+    try{ swap (that); }
+
+    catch (bexcept* e){ bexcept_throw_without_msg (e); }
+}
+
+size_t bvector <bool> :: size ()
+{
+    return _size;
+}
 
 #endif //__BVECTOR_HPP__
