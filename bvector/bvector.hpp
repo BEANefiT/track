@@ -208,7 +208,7 @@ public:
 
         operator bool()
         {
-            return (bool) ((*arr & 1) << shift)
+            return (bool) ((*arr & 1) << shift);
         }
     };
 
@@ -340,7 +340,7 @@ void bvector <bool> :: push_back (const bool &value)
     _size++;
 }
 
-data_T bvector <data_T> :: pop_back ()
+bool bvector <bool> :: pop_back ()
 {
     if (_size <= 0)
     {
@@ -349,5 +349,16 @@ data_T bvector <data_T> :: pop_back ()
 
     return (bool) (_data [(_size - 1) / 8] & (1 >> ((8 - (_size-- % 8)) % 8)));
 }
+
+bvector <bool> :: proxy_t bvector <bool> :: operator[] (size_t index)
+{
+    if (index >= _capacity)
+    {
+        bexcept_throw ("index >= _capacity");
+    }
+
+    return proxy_t (& (_data [--_size / 8]), _size % 8);
+}
+
 
 #endif //__BVECTOR_HPP__
