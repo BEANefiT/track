@@ -196,6 +196,21 @@ template <>
 class bvector <bool>
 {
 public:
+    struct proxy_t
+    {
+        char*   arr;
+        int     shift;
+
+        proxy_t(char* ptr, int sh):
+            arr (ptr),
+            shift (sh)
+        {}
+
+        operator bool()
+        {
+            return (bool) ((*arr & 1) << shift)
+        }
+    };
 
     bvector();
     explicit bvector (size_t);
@@ -207,7 +222,7 @@ public:
     void                resize (size_t);
     void                push_back (const bool &value);
     bool                pop_back ();
-    proxy_t             operator [] (size_t index);
+    struct proxy_t      operator [] (size_t index);
     bvector             &operator = (const bvector &that);
     bvector             &operator = (bvector &&that) noexcept;
     size_t              size ();
@@ -276,11 +291,7 @@ bvector <bool> :: ~bvector ()
 {
     if (_data != nullptr)
     {
-        for (int i = 0; i < _capacity / 8; i++)
-            _data[i].~proxy_t()
-
         delete[] _data;
-
         _data = nullptr;
     }
 }
@@ -301,7 +312,7 @@ void bvector <bool> :: resize (size_t new_capacity)
 
     _capacity = 8 * (new_capacity / 8 + (new_capacity % 8) / (new_capacity % 8));
 
-    data_T* new_data = new (std::nothrow) char [_capacity / 8];
+    auto new_data = new (std::nothrow) char [_capacity / 8];
 
     if (new_data == nullptr)
     {
@@ -313,6 +324,30 @@ void bvector <bool> :: resize (size_t new_capacity)
 
     delete _data;
     _data = new_data;
+}
+
+void bvector <bool> :: push_back (const bool &value)
+{
+    if (_size >= _capacity)
+    {
+        try{ resize(2 * _capacity + 1); }
+
+        catch (bexcept* e){ bexcept_throw_without_msg (e); }
+    }
+
+    _data [_size / 8] |= (value << (7 - (_size % 8)));
+
+    _size++;
+}
+
+data_T bvector <data_T> :: pop_back ()
+{
+    if (_size <= 0)
+    {
+        bexcept_throw ("bvector is empty");
+    }
+
+    return (bool) (_data [(_size - 1) / 8] & (1 >> ((8 - (_size-- % 8)) % 8)));
 }
 
 #endif //__BVECTOR_HPP__
