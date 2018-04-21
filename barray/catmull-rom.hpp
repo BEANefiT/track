@@ -1,7 +1,7 @@
 #ifndef __CATMULL_ROM_HPP__
 #define __CATMULL_ROM_HPP__
 
-#include "barray.h"
+#include "barray.hpp"
 
 double tGet (double ti, double yj, double yi)
 {

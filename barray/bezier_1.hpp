@@ -1,7 +1,7 @@
 #ifndef __STRAIGHT_HPP__
 #define __STRAIGHT_HPP__
 
-#include "barray.h"
+#include "barray.hpp"
 
 template <typename data_T>
 data_T barray <data_T> :: operator [] (double index)

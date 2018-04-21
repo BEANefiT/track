@@ -1,7 +1,7 @@
 #ifndef __BEZIER_3_HPP__
 #define __BEZIER_3_HPP__
 
-#include "barray.h"
+#include "barray.hpp"
 
 template <typename data_T>
 data_T barray <data_T> :: operator [] (double index)

@@ -1,8 +1,31 @@
 #ifndef __BARRAY_HPP__
 #define __BARRAY_HPP__
 
-#include "barray.h"
+#include <cmath>
+#include "../bexcept/bexcept.hpp"
 #include "straight.hpp"
+
+template <typename data_T>
+
+class barray
+{
+public:
+
+    explicit barray (size_t);
+    barray (const barray <data_T> &that);
+    barray (barray <data_T> &&that) noexcept;
+    ~barray ();
+
+    data_T& operator [] (int index);
+    data_T operator [] (double index);
+
+private:
+
+    size_t      _capacity;
+    size_t      _size;
+    data_T*     _data;
+};
+
 
 template <typename data_T>
 barray <data_T> :: barray (size_t capacity):
