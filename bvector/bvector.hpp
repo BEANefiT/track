@@ -85,6 +85,7 @@ bvector <data_T> :: bvector (size_t capacity, const data_T &value):
 template <typename data_T>
 bvector <data_T> :: ~bvector ()
 {
+    puts("KEK");
     for (int i = 0; i < _capacity; i++)
         _data [i].~data_T();
 
@@ -120,7 +121,7 @@ void bvector <data_T> :: resize (size_t new_capacity)
     for (size_t i = 0; i < _capacity; i++)
         new_data[i] = _data[i];
 
-    delete _data;
+    delete [] _data; 
     _capacity = new_capacity;
     _data = new_data;
 }
@@ -147,7 +148,7 @@ data_T bvector <data_T> :: pop_back ()
     }
 
     auto tmp = _data [--_size];
-    _data [size].~data_T();
+    _data [_size + 1].~data_T();
 
     return tmp;
 }

@@ -1,6 +1,10 @@
 #ifndef __BEXCEPT_HPP__
 #define __BEXCEPT_HPP__
 
+#include <iostream>
+#include <exception>
+#include <cstddef>
+
 class bexcept: public std::exception
 {
 public:
@@ -57,7 +61,7 @@ void bexcept :: dump ()
     for (size_t i = 0; i < _count; i++)
         std::cout << '\t';
 
-    std::cout << "in file \'" << _file << "\' in func \'" << _func << "\' in line \'" << _line << '\'';
+    std::cout << "in file \'" << _file << "\' in func \'" << _func << "\': " << _line;
 
     if (_what)
         std::cout << " \"" << _what <<'\"';
