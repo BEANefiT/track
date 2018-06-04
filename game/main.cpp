@@ -1,15 +1,17 @@
 #include <SFML/Graphics.hpp>
 
+#define iskey sf::Keyboard::isKeyPressed
+
 enum direction
 {
-    left_down   = 0,
-    down        = 1,
-    right_down  = 2,
-    left        = 3,
-    left_up     = 4,
-    right       = 5,
-    right_up    = 6,
-    up          = 7
+    left_down   = 5,
+    down        = 4,
+    right_down  = 3,
+    left        = 6,
+    left_up     = 7,
+    right       = 2,
+    right_up    = 1,
+    up          = 0
 };
  
 class gameobj
@@ -25,15 +27,13 @@ class gameobj
         float           _vy;
         float           _ax;
         float           _ay;
-        float           default_speed;
-        float           diag_speed;
         enum direction  _dir;
        
     public:      
         sf::Sprite      sprite;
 
         void    upd (sf::RenderWindow&, float time);
-        void    speed (enum direction);
+        void    speed (enum direction, float v);
 
         virtual void move (float time) = 0;
 
@@ -49,8 +49,6 @@ class gameobj
             _vy             (vy),
             _ax             (ax),
             _ay             (ay),
-            default_speed   (0.4),
-            diag_speed      (0.4 / 1.41),
             _dir            (down)
 
             {};
@@ -60,10 +58,16 @@ class gameobj
 
 class player: public gameobj
 {
+    protected:
+        float default_speed;
+        float diag_speed;
+
     public:
         player (sf::Texture* t, float x, float y):
-            gameobj (t, 96, 96, x, y, 0, 0, 0, 0)
+            gameobj (t, 96, 96, x, y, 0, 0, 0, 0),
+            default_speed (0.1)
         {
+            diag_speed = default_speed / 1.41;
             sprite.setTexture (*t);
             sprite.setPosition (_x, _y);
         };
@@ -72,62 +76,58 @@ class player: public gameobj
         {
             if (_vx == 0 && _vy == 0)
             {
-                sprite.setTextureRect (sf::IntRect (0, _dir * 100, 100, 100));
-                sprite.setScale (sf::Vector2f (2.f, 2.f));
+                sprite.setTextureRect (sf::IntRect (2 * 96, _dir * 96, 96, 96));
                 return;
             }
 
-            if (_vx > 0)
-            {
-                if (_vy > 0)
-                {
-                    _dir = right_down;
-                    _vx  = diag_speed;
-                    _vy  = diag_speed;
-                }
-
-                if (_vy < 0)
-                {
-                    _dir = right_up;
-                    _vx  = diag_speed;
-                    _vy  = -diag_speed;
-                }
-            }
-
-            if (_vx < 0)
-            {
-                if (_vy > 0)
-                {
-                    _dir = left_down;
-                    _vx  = -diag_speed;
-                    _vy  = diag_speed;
-                }
-
-                if (_vy < 0)
-                {
-                    _dir = left_up;
-                    _vx  = -diag_speed;
-                    _vy  = -diag_speed;
-                }
-            }
-
             sprite.move (_vx * time, _vy * time);
-            sprite.setTextureRect (sf::IntRect (100 * (int)_frame_num, _dir * 100, 100, 100));
+            sprite.setTextureRect (sf::IntRect (96 * (int)_frame_num, _dir * 96, 96, 96));
             _vx = 0;
             _vy = 0;
 
-            _frame_num += 0.0105;
+            _frame_num += 0.01;
 
-            if (_frame_num > 9)
+            if (_frame_num > 8)
                 _frame_num = 1;
         }
 
         virtual void check (enum sf::Keyboard::Key w, enum sf::Keyboard::Key a, enum sf::Keyboard::Key s, enum sf::Keyboard::Key d) override
         {
-            if (sf::Keyboard::isKeyPressed (w)) { speed (up)   ; }
-            if (sf::Keyboard::isKeyPressed (a)) { speed (left) ; }
-            if (sf::Keyboard::isKeyPressed (s)) { speed (down) ; }
-            if (sf::Keyboard::isKeyPressed (d)) { speed (right); }
+            if (iskey (a))
+            {
+                if (iskey (w))  { speed (left_up, diag_speed); return; }
+                    
+                if (iskey (s))  { speed (left_down, diag_speed); return; }
+
+                speed (left, default_speed);
+
+                return;
+            }
+
+            if (iskey (d))
+            {
+                if (iskey (w))  { speed (right_up, diag_speed); return; }
+                    
+                if (iskey (s))  { speed (right_down, diag_speed); return; }
+
+                speed (right, default_speed);
+
+                return;
+            }
+
+            if (iskey (w))
+            {
+                speed (up, default_speed);
+
+                return;
+            }
+
+            if (iskey (s))
+            {
+                speed (down, default_speed);
+
+                return;
+            }
         }
 };
 
@@ -137,19 +137,27 @@ void gameobj::upd(sf::RenderWindow& window, float time)
     window.draw (sprite);
 }
 
-void gameobj::speed (enum direction dir)
+void gameobj::speed (enum direction dir, float v)
 {
     _dir = dir;
 
     switch (dir)
     {
-        case down:  { _vy = default_speed       ; break; }
+        case down:       { _vy =  v;           break; }
 
-        case left:  { _vx = default_speed * (-1); break; }
+        case left:       { _vx = -v;           break; }
 
-        case right: { _vx = default_speed       ; break; }
+        case right:      { _vx =  v;           break; }
 
-        case up:    { _vy = default_speed * (-1); break; }
+        case up:         { _vy = -v;           break; }
+
+        case right_up:   { _vy = -v; _vx =  v; break; }
+    
+        case right_down: { _vy =  v; _vx =  v; break; }
+
+        case left_up:    { _vy = -v; _vx = -v; break; }
+
+        case left_down:  { _vy =  v; _vx = -v; break; }
     }
 }
 
@@ -160,7 +168,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1440, 720), "test");
 
     sf::Image img;
-    img.loadFromFile ("image/girl.png");
+    img.loadFromFile ("image/devil.png");
 
     sf::Texture texture;
     texture.loadFromImage (img);
@@ -183,7 +191,7 @@ int main()
 
         window.clear(sf::Color(58, 58, 58));
 
-        float time = clock.getElapsedTime().asMicroseconds() / 800;
+        float time = clock.getElapsedTime().asMicroseconds() / 500;
 
         for (int i = 0; i < 15; i++)
             if (objs [i])
