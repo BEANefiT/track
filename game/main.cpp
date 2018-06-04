@@ -15,15 +15,23 @@ int main()
     map_texture.loadFromFile ("image/test_map.png");
 
     gameobj *objs [15] = {};
-    objs[0] = new map ( 15, 7, 2, 32, &map_texture, 96, " s0",
+    objs[0] = new map ( 20, 15, 3, 32, &map_texture, 3, " s0",
                         {
-                            "000000000000000"
-                            "0             0"
-                            "0             0"
-                            "0   s         0"
-                            "0             0"
-                            "0       s     0"
-                            "000000000000000"
+                            "00000000000000000000"
+                            "0                  0"
+                            "0                  0"
+                            "0             s    0"
+                            "0                  0"
+                            "0                  0"
+                            "0      s           0"
+                            "0                  0"
+                            "0                  0"
+                            "0                  0"
+                            "0          s       0"
+                            "0                  0"
+                            "0                  0"
+                            "0                  0"
+                            "00000000000000000000"
                                                 });
 
     objs[1] = new player (&player_texture, 150, 150);
@@ -41,7 +49,7 @@ int main()
 
         window.clear(sf::Color(58, 58, 58));
 
-        float time = clock.getElapsedTime().asMicroseconds() / 500;
+        float time = clock.getElapsedTime().asMicroseconds() / 400;
 
         for (int i = 0; i < 15; i++)
             if (objs [i])

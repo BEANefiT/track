@@ -2,12 +2,10 @@
 #define __MAP_H__
 
 #include "gameobj.hpp"
-#include <iostream>
 
 class map: public gameobj
 {
     protected:
-        sf::Sprite  _sprite;
         sf::String  _legend;
         sf::String  _scheme;
         float       _block_sz;
@@ -36,18 +34,20 @@ class map: public gameobj
             {
                 for (int j = 0; j < _map_width; j++)
                 {
-                    char tmp = _scheme [_map_height * i + j];
+                    char tmp = _scheme [_map_width * i + j];
 
                     for (int k = 0; k < _block_count; k++)
                     {
                         if (_legend [k] == tmp)
                         {
-                            _sprite.setTextureRect (sf::IntRect ( _block_sz * (k % _texture_width),
-                                                                  _block_sz * (k / _texture_width),
+                            int y = k / _texture_width;
+                            int x = k - y * _texture_width;
+                            _sprite.setTextureRect (sf::IntRect ( _block_sz * x,
+                                                                  _block_sz * y,
                                                                   _block_sz,
                                                                   _block_sz                      ));
 
-                            _sprite.setPosition (_block_sz * i, _block_sz * j);
+                            _sprite.setPosition (_block_sz * j, _block_sz * i);
 
                             window -> draw (_sprite);
 
