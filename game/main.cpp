@@ -1,5 +1,6 @@
 #include "gameobj.hpp"
 #include "player.hpp"
+#include "map.hpp"
 
 int main()
 {
@@ -10,8 +11,22 @@ int main()
     sf::Texture player_texture;
     player_texture.loadFromFile ("image/devil.png");
 
+    sf::Texture map_texture;
+    map_texture.loadFromFile ("image/test_map.png");
+
     gameobj *objs [15] = {};
-    objs[0] = new player (&player_texture, 150, 150);
+    objs[0] = new map ( 15, 7, 2, 32, &map_texture, 96, " s0",
+                        {
+                            "000000000000000"
+                            "0             0"
+                            "0             0"
+                            "0   s         0"
+                            "0             0"
+                            "0       s     0"
+                            "000000000000000"
+                                                });
+
+    objs[1] = new player (&player_texture, 150, 150);
 
     while (window.isOpen())
     {
@@ -22,7 +37,7 @@ int main()
                 window.close();
         }
 
-        objs [0] -> check (sf::Keyboard::W,  sf::Keyboard::A,    sf::Keyboard::S,    sf::Keyboard::D);
+        objs [1] -> check (sf::Keyboard::W, sf::Keyboard::A, sf::Keyboard::S, sf::Keyboard::D);
 
         window.clear(sf::Color(58, 58, 58));
 

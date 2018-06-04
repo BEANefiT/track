@@ -21,7 +21,7 @@ enum direction
 class gameobj
 {
     protected:
-        sf::Texture*    _texture;
+        sf::Sprite      _sprite;
         float           _frame_num;
         float           _width;
         float           _height;
@@ -34,8 +34,6 @@ class gameobj
         enum direction  _dir;
        
     public:      
-        sf::Sprite      sprite;
-
         void    upd (sf::RenderWindow*, float time);
         void    speed (enum direction, float v);
 
@@ -44,7 +42,6 @@ class gameobj
 
         gameobj (   sf::Texture* texture, float width, float height, float x, float y,
                     float vx, float vy, float ax, float ay):
-            _texture        (texture),
             _frame_num      (0),
             _width          (width),
             _height         (height),
@@ -56,7 +53,10 @@ class gameobj
             _ay             (ay),
             _dir            (down)
 
-        {};
+        {
+            _sprite.setTexture (*texture);
+            _sprite.setPosition (_x, _y);
+        }
 
         virtual void check (enum sf::Keyboard::Key, enum sf::Keyboard::Key,
                             enum sf::Keyboard::Key, enum sf::Keyboard::Key) = 0;

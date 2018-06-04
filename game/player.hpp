@@ -15,20 +15,21 @@ class player: public gameobj
             default_speed (0.1)
         {
             diag_speed = default_speed / 1.41;
-            sprite.setTexture (*t);
-            sprite.setPosition (_x, _y);
         };
 
         void move (float time) override
         {
             if (_vx == 0 && _vy == 0)
             {
-                sprite.setTextureRect (sf::IntRect (2 * _width, _dir * _height, _width, _height));
+                _sprite.setTextureRect (sf::IntRect (2 * _width, _dir * _height, _width, _height));
                 return;
             }
 
-            sprite.move (_vx * time, _vy * time);
-            sprite.setTextureRect (sf::IntRect (_width * (int)_frame_num, _dir * _height, _width, _height));
+            _sprite.move (_vx * time, _vy * time);
+            _sprite.setTextureRect (sf::IntRect (   _width * (int)_frame_num,
+                                                    _dir * _height,
+                                                    _width,
+                                                    _height                 ));
             _vx = 0;
             _vy = 0;
 
@@ -40,10 +41,11 @@ class player: public gameobj
 
         void draw (sf::RenderWindow* window)
         {
-            window -> draw (sprite);
+            window -> draw (_sprite);
         }
 
-        virtual void check (enum sf::Keyboard::Key w, enum sf::Keyboard::Key a, enum sf::Keyboard::Key s, enum sf::Keyboard::Key d) override
+        virtual void check (enum sf::Keyboard::Key w, enum sf::Keyboard::Key a,
+                            enum sf::Keyboard::Key s, enum sf::Keyboard::Key d) override
         {
             if (iskey (a))
             {
