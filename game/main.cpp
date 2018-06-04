@@ -7,15 +7,11 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(1440, 720), "test");
 
-    sf::Image img;
-    img.loadFromFile ("image/devil.png");
-
-    sf::Texture texture;
-    texture.loadFromImage (img);
+    sf::Texture player_texture;
+    player_texture.loadFromFile ("image/devil.png");
 
     gameobj *objs [15] = {};
-    objs[0] = new player (&texture, 150, 150);
-    objs[1] = new player (&texture, 150, 300);
+    objs[0] = new player (&player_texture, 150, 150);
 
     while (window.isOpen())
     {
@@ -26,8 +22,7 @@ int main()
                 window.close();
         }
 
-        objs [0] -> check (sf::Keyboard::Up, sf::Keyboard::Left, sf::Keyboard::Down, sf::Keyboard::Right);
-        objs [1] -> check (sf::Keyboard::W,  sf::Keyboard::A,    sf::Keyboard::S,    sf::Keyboard::D);
+        objs [0] -> check (sf::Keyboard::W,  sf::Keyboard::A,    sf::Keyboard::S,    sf::Keyboard::D);
 
         window.clear(sf::Color(58, 58, 58));
 
@@ -35,7 +30,7 @@ int main()
 
         for (int i = 0; i < 15; i++)
             if (objs [i])
-                objs [i] -> upd (window, time);
+                objs [i] -> upd (&window, time);
 
         clock.restart();
 

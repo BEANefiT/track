@@ -1,4 +1,5 @@
 #ifndef __GAMEOBJ_HPP__
+
 #define __GAMEOBJ_HPP__
 
 #include <SFML/Graphics.hpp>
@@ -35,10 +36,11 @@ class gameobj
     public:      
         sf::Sprite      sprite;
 
-        void    upd (sf::RenderWindow&, float time);
+        void    upd (sf::RenderWindow*, float time);
         void    speed (enum direction, float v);
 
-        virtual void move (float time) = 0;
+        virtual void move (float time)          = 0;
+        virtual void draw (sf::RenderWindow*)   = 0;
 
         gameobj (   sf::Texture* texture, float width, float height, float x, float y,
                     float vx, float vy, float ax, float ay):
@@ -54,15 +56,16 @@ class gameobj
             _ay             (ay),
             _dir            (down)
 
-            {};
+        {};
 
-        virtual void check (enum sf::Keyboard::Key, enum sf::Keyboard::Key, enum sf::Keyboard::Key, enum sf::Keyboard::Key) = 0;
+        virtual void check (enum sf::Keyboard::Key, enum sf::Keyboard::Key,
+                            enum sf::Keyboard::Key, enum sf::Keyboard::Key) = 0;
 };
 
-void gameobj::upd(sf::RenderWindow& window, float time)
+void gameobj::upd(sf::RenderWindow* window, float time)
 {
     move (time);
-    window.draw (sprite);
+    draw (window);
 }
 
 void gameobj::speed (enum direction dir, float v)

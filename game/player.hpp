@@ -19,7 +19,7 @@ class player: public gameobj
             sprite.setPosition (_x, _y);
         };
 
-        void move(float time) override
+        void move (float time) override
         {
             if (_vx == 0 && _vy == 0)
             {
@@ -36,6 +36,11 @@ class player: public gameobj
 
             if (_frame_num > 8)
                 _frame_num = 1;
+        }
+
+        void draw (sf::RenderWindow* window)
+        {
+            window -> draw (sprite);
         }
 
         virtual void check (enum sf::Keyboard::Key w, enum sf::Keyboard::Key a, enum sf::Keyboard::Key s, enum sf::Keyboard::Key d) override
