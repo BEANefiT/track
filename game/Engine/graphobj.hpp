@@ -20,10 +20,12 @@ public:
     graphobj (sf::Texture&, float, float, float, float, float, float, float);
     graphobj (sf::Texture&, float, float, float, float, float, float, float, enum direction);
     
-    void    set_pos (float, float);
-    void    set_pos (struct vector);
-    void    move (float, float);
-    void    move (struct vector);
+    void            set_pos (float, float);
+    void            set_pos (struct vector);
+    void            move (float, float);
+    void            move (struct vector);
+    void            draw(sf::RenderWindow&);
+    void            stay();
 };
 
 

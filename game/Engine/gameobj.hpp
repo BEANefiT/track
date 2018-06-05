@@ -5,15 +5,10 @@
 #include "graphobj.hpp"
 #include "physobj.hpp"
 
-#define iskey sf::Keyboard::isKeyPressed
-
 class gameobj: public graphobj, public physobj
 {
 public:
     void            upd (sf::RenderWindow&, float time);
-    
-    virtual void move (float time)          = 0;
-    virtual void draw (sf::RenderWindow&)   = 0;
     
     gameobj (   sf::Texture&,           float x, float y,
                 float width_graph,      float height_graph,
@@ -39,11 +34,14 @@ public:
                 float vx, float vy,     float ax, float ay,
                 enum direction dir);
     
-    virtual void check (enum sf::Keyboard::Key, enum sf::Keyboard::Key,
-                        enum sf::Keyboard::Key, enum sf::Keyboard::Key) = 0;
+    void            set_speed (enum direction, float);
+    virtual void    move (float);
+    virtual void    collide (gameobj*);
+    virtual void    respond (gameobj*);
+    virtual void    draw (sf::RenderWindow&);
 };
 
-void gameobj::upd(sf::RenderWindow* window, float time)
+void gameobj::upd(sf::RenderWindow& window, float time)
 {
     move (time);
     draw (window);
