@@ -17,6 +17,17 @@ enum direction
     right_up    = 1,
     up          = 0
 };
+
+struct vector
+{
+    float x;
+    float y;
+
+    vector (float a, float b):
+        x (a),
+        y (b)
+    {};
+};
  
 class gameobj
 {
@@ -34,8 +45,11 @@ class gameobj
         enum direction  _dir;
        
     public:      
-        void    upd (sf::RenderWindow*, float time);
-        void    speed (enum direction, float v);
+        void            upd (sf::RenderWindow*, float time);
+        void            speed (enum direction, float v);
+        struct vector   getPosition ();
+        struct vector   getSpeed ();
+        struct vector   getAcceleration ();
 
         virtual void move (float time)          = 0;
         virtual void draw (sf::RenderWindow*)   = 0;
@@ -90,6 +104,21 @@ void gameobj::speed (enum direction dir, float v)
 
         case left_down:  { _vy =  v; _vx = -v; break; }
     }
+}
+
+struct vector gameobj::getPosition ()
+{
+    return vector (_x, _y);
+}
+
+struct vector gameobj::getSpeed ()
+{
+    return vector (_vx, _vy);
+}
+
+struct vector gameobj::getAcceleration ()
+{
+    return vector (_ax, _ay);
 }
 
 #endif //__GAMEOBJ_HPP__

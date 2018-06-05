@@ -6,15 +6,15 @@
 class player: public gameobj
 {
     protected:
-        float default_speed;
-        float diag_speed;
+        float       _default_speed;
+        float       _diag_speed;
 
     public:
         player (sf::Texture* t, float x, float y):
             gameobj (t, 96, 96, x, y, 0, 0, 0, 0),
-            default_speed (0.1)
+            _default_speed (0.1)
         {
-            diag_speed = default_speed / 1.41;
+            _diag_speed  = _default_speed / 1.41;
         };
 
         void move (float time) override
@@ -25,6 +25,9 @@ class player: public gameobj
                 return;
             }
 
+            _x += _vx * time;
+            _y += _vy * time;
+
             _sprite.move (_vx * time, _vy * time);
             _sprite.setTextureRect (sf::IntRect (   _width * (int)_frame_num,
                                                     _dir * _height,
@@ -33,9 +36,9 @@ class player: public gameobj
             _vx = 0;
             _vy = 0;
 
-            _frame_num += 0.01;
+            _frame_num += 0.012;
 
-            if (_frame_num > 8)
+            if (_frame_num >= 8)
                 _frame_num = 1;
         }
 
@@ -49,36 +52,36 @@ class player: public gameobj
         {
             if (iskey (a))
             {
-                if (iskey (w))  { speed (left_up, diag_speed); return; }
+                if (iskey (w))  { speed (left_up,   _diag_speed); return; }
                     
-                if (iskey (s))  { speed (left_down, diag_speed); return; }
+                if (iskey (s))  { speed (left_down, _diag_speed); return; }
 
-                speed (left, default_speed);
+                speed (left, _default_speed);
 
                 return;
             }
 
             if (iskey (d))
             {
-                if (iskey (w))  { speed (right_up, diag_speed); return; }
+                if (iskey (w))  { speed (right_up,   _diag_speed); return; }
                     
-                if (iskey (s))  { speed (right_down, diag_speed); return; }
+                if (iskey (s))  { speed (right_down, _diag_speed); return; }
 
-                speed (right, default_speed);
+                speed (right, _default_speed);
 
                 return;
             }
 
             if (iskey (w))
             {
-                speed (up, default_speed);
+                speed (up, _default_speed);
 
                 return;
             }
 
             if (iskey (s))
             {
-                speed (down, default_speed);
+                speed (down, _default_speed);
 
                 return;
             }
