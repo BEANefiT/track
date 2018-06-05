@@ -1,6 +1,7 @@
 #include "gameobj.hpp"
 #include "player.hpp"
 #include "map.hpp"
+#include "bullet.hpp"
 
 int main()
 {
@@ -16,6 +17,9 @@ int main()
 
     sf::Texture         map_texture;
     map_texture.loadFromFile ("image/test_map.png");
+
+    sf::Texture         bullet_texture;
+    bullet_texture.loadFromFile ("image/bullet.png");
 
     gameobj *objs [15] = {};
 
@@ -46,6 +50,8 @@ int main()
 
     objs[1] = new player (&player_texture, 150, 150);
 
+    objs[2] = new bullet (&bullet_texture, 0, 0, 10, 10, 0.03, 0.03);
+    
     while (window.isOpen())
     {
         sf::Event event;
