@@ -17,7 +17,6 @@ protected:
     
 public:
     physobj (float x, float y, float width, float height);
-    physobj (float x, float y, float width, float height, float vx, float vy);
     physobj (float x, float y, float width, float height, float vx, float vy, float ax, float ay);
     
     void    set_pos (float, float);
