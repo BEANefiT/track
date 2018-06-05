@@ -34,6 +34,7 @@ class map: public gameobj
 
         void draw (sf::RenderWindow* window)
         {
+            _sprite.setPosition (0, 0);
             for (int i = 0; i < _map_height; i++)
             {
                 for (int j = 0; j < _map_width; j++)
@@ -43,7 +44,7 @@ class map: public gameobj
                         {                                                                       \
                             _sprite.setTextureRect (sf::IntRect (x, y, _block_sz, _block_sz));  \
                                                                                                 \
-                            _sprite.setPosition (_block_sz * j, _block_sz * i);                 \
+                            _sprite.move (_block_sz, 0);                                        \
                                                                                                 \
                             window -> draw (_sprite);                                           \
                                                                                                 \
@@ -57,6 +58,8 @@ class map: public gameobj
 
                     #undef DEF_TILE
                 }
+
+                _sprite.move (-_map_width * _block_sz, _block_sz);
             }
         }
         

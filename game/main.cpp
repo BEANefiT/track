@@ -58,8 +58,8 @@ int main()
         objs [1] -> check (sf::Keyboard::W, sf::Keyboard::A, sf::Keyboard::S, sf::Keyboard::D);
 
         struct vector player_coord = objs [1] -> getPosition();
-        //view.setCenter (player_coord.x, player_coord.y);
-        //window.setView (view);
+        view.setCenter (player_coord.x, player_coord.y);
+        window.setView (view);
         window.clear(sf::Color(58, 58, 58));
 
         float time = clock.getElapsedTime().asMicroseconds() / 200;
