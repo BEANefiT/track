@@ -7,7 +7,7 @@
 
 class gameobj: public graphobj, public physobj
 {
-    private:
+    protected:
         bool    _life;
         int     _type;
     
@@ -38,7 +38,6 @@ class gameobj: public graphobj, public physobj
     
         void            upd (sf::RenderWindow&, float time);
         void            set_speed (enum direction, float);
-        bool            isAlive();
         virtual void    move (float time);
         virtual void    collide (gameobj*);
         virtual void    draw (sf::RenderWindow&);
