@@ -6,8 +6,6 @@ DEF_TILE( 's', 32,  0)
 
 DEF_TILE( '0', 64,  0)
 
-DEF_TILE( 'f', 96,  0)
-
 DEF_TILE( 'h', 128, 0)
 
 #endif //DEF_TILE

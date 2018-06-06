@@ -58,6 +58,7 @@ graphobj::graphobj (sf::Texture& t, float x, float y, float width, float height,
     _dir                (dir)
 {
     _sprite.setTexture  (t);
+    _sprite.setTextureRect (sf::IntRect (_frame_default * _width, _dir * _height, _width, _height));
     _sprite.setPosition (x, y);
 }
 

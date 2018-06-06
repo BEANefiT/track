@@ -6,18 +6,36 @@
 #define ISKEY sf::Keyboard::isKeyPressed
 #define KEY sf::Keyboard::Key
 
+#define PLAYER_LEFT( c )                                                                                                                            \
+    scheme [(int) ((get_pos().y + get_height() / 2) / obj -> get_height())] [(int) ((get_pos().x - get_width() / 2) / obj -> get_width())] == c ||  \
+    scheme [(int) ((get_pos().y + get_height() / 2) / obj -> get_height())] [(int) ((get_pos().x - get_width() / 2) / obj -> get_width())] == c
+
+#define PLAYER_RIGHT( c )                                                                                                                           \
+    scheme [(int) ((get_pos().y + get_height() / 2) / obj -> get_height())] [(int) ((get_pos().x + get_width() / 2) / obj -> get_width())] == c ||  \
+    scheme [(int) ((get_pos().y + get_height() / 2) / obj -> get_height())] [(int) ((get_pos().x + get_width() / 2) / obj -> get_width())] == c
+
+#define PLAYER_UP( c )                                                                                                                              \
+    scheme [(int) ((get_pos().y + get_height() / 3) / obj -> get_height())] [(int) ((get_pos().x + get_width() / 3) / obj -> get_width())] == c ||  \
+    scheme [(int) ((get_pos().y + get_height() / 3) / obj -> get_height())] [(int) ((get_pos().x - get_width() / 3) / obj -> get_width())] == c
+
+#define PLAYER_DOWN( c )                                                                                                                            \
+    scheme [(int) ((get_pos().y + get_height()) / obj -> get_height())] [(int) ((get_pos().x + get_width() / 3) / obj -> get_width())] == c ||  \
+    scheme [(int) ((get_pos().y + get_height()) / obj -> get_height())] [(int) ((get_pos().x - get_width() / 3) / obj -> get_width())] == c
+
 class player: public gameobj
 {
     protected:
         float       _default_speed;
         float       _diag_speed;
+        int         _hitpoints;
 
     public:
         player (sf::Texture& t, float x, float y):
     
             gameobj (1, t, x, y, 96, 96, 32, 32, 2, 8, 0.03),
     
-            _default_speed (0.3)
+            _default_speed  (0.3),
+            _hitpoints      (100)
         {
             _diag_speed  = _default_speed / 1.41;
         };
@@ -45,29 +63,44 @@ class player: public gameobj
             graphobj::draw (window);
         }
     
-        void collide (gameobj* obj) override
+        void respond (gameobj* obj) override
         {
             switch (obj -> get_type())
             {
-                case 0:
+                case map_:
                 {
                     sf::String* scheme = obj -> get_scheme();
                     
                     if (_vx < 0)
-                        if (scheme [(int) (get_pos().y / obj -> get_height())] [(int) ((get_pos().x - get_width() / 2) / obj -> get_width())] == '0')
+                        if (PLAYER_LEFT( '0' ) || PLAYER_LEFT( 's' ))
                             _vx = 0;
-                    
+                        
                     if (_vx > 0)
-                        if (scheme [(int) (get_pos().y / obj -> get_height())] [(int) ((get_pos().x + get_width() / 2) / obj -> get_width())] == '0')
+                        if (PLAYER_RIGHT( '0' ) || PLAYER_RIGHT( 's' ))
                             _vx = 0;
                     
                     if (_vy < 0)
-                        if (scheme [(int) ((get_pos().y - get_height() / 2) / obj -> get_height())] [(int) (get_pos().x / obj -> get_width())] == '0')
+                        if (PLAYER_UP( '0' ) || PLAYER_UP( 's' ))
                             _vy = 0;
                     
                     if (_vy > 0)
-                        if (scheme [(int) ((get_pos().y + get_height() / 2) / obj -> get_height())] [(int) (get_pos().x / obj -> get_width())] == '0')
+                        if (PLAYER_DOWN( '0' ) || PLAYER_DOWN( 's' ))
                             _vy = 0;
+                    
+                    break;
+                }
+                    
+                case flower_:
+                {
+                    if (collide (obj))
+                    {
+                        _hitpoints -= 50;
+                        
+                        if (_hitpoints <= 0)
+                            _life = false;
+                    }
+                    
+                    break;
                 }
             }
         }

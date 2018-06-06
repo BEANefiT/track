@@ -2,6 +2,7 @@
 #define __PHYSOBJ_HPP__
 
 #include "engine.h"
+#include <cmath>
 
 class physobj
 {
@@ -37,6 +38,8 @@ public:
     struct vector   get_pos();
     float           get_width();
     float           get_height();
+    
+    bool            collide (physobj*);
 };
 
 physobj::physobj (float x, float y, float width, float height):
@@ -110,6 +113,16 @@ float   physobj::get_width()
 float   physobj::get_height()
 {
     return _height;
+}
+
+bool    physobj::collide (physobj* obj)
+{
+    if (fabs (_x - obj -> _x) < (_width  + obj -> _width)  / 2 &&
+        fabs (_y - obj -> _y) < (_height + obj -> _height) / 2)
+        
+        return true;
+    
+    return false;
 }
 
 #endif //__PHYSOBJ_HPP__

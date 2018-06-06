@@ -37,7 +37,6 @@ void    objmanager::run (sf::RenderWindow& window, float time)
 {
     blist <gameobj*> :: blist_elem* obj_ptr1 = _objs -> get_head();
     blist <gameobj*> :: blist_elem* obj_ptr  = obj_ptr1;
-    blist <gameobj*> :: blist_elem* obj_ptr2 = obj_ptr1 -> get_next();
     
     for (int i = 0; i < _objs -> size(); i++)
     {
@@ -47,14 +46,16 @@ void    objmanager::run (sf::RenderWindow& window, float time)
     
     for (int i = 0; i < _objs -> size(); i++)
     {
+        blist <gameobj*> :: blist_elem* obj_ptr2 = obj_ptr1 -> get_next();
+        
         gameobj* obj1 = obj_ptr1 -> get_elem();
         
         for (int j = i + 1; j < _objs -> size(); j++)
         {
             gameobj* obj2 = obj_ptr2 -> get_elem();
             
-            obj1 -> collide (obj2);
-            obj2 -> collide (obj1);
+            obj1 -> respond (obj2);
+            obj2 -> respond (obj1);
             
             obj_ptr2 = obj_ptr2 -> get_next();
         }

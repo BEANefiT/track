@@ -7,7 +7,8 @@
 enum type_t
 {
     map_    = 0,
-    player_ = 1
+    player_ = 1,
+    flower_ = 2
 };
 
 #endif //__GAME_H__

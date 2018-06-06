@@ -1,6 +1,7 @@
 #include "game.h"
 #include "player.hpp"
 #include "map.hpp"
+#include "flower.hpp"
 
 int main()
 {
@@ -21,12 +22,12 @@ int main()
     
     sf::String scheme [30] {
         "00000000000000000000000000000000000000000000000000000000000000000",
-        "0     f                                                         0",
+        "0                                                               0",
         "0                  h                                            0",
         "0                                                          s    0",
         "0                                                               0",
-        "0                                                               0",
-        "0      s                                     f                  0",
+        "0      ss                                                       0",
+        "0      ss                                                       0",
         "0                                                               0",
         "0                                                               0",
         "0                                                               0",
@@ -41,7 +42,7 @@ int main()
         "0                                                               0",
         "0                                                               0",
         "0                                          h                    0",
-        "0  s         f         s                                        0",
+        "0  s                   s                                        0",
         "0                                                               0",
         "0                                                               0",
         "00000000000000000000000000000000000000000000000000000000000000000"
@@ -50,6 +51,10 @@ int main()
     objs.create (new map (65, 30, 32, map_texture, scheme));
     
     objs.create (new player (player_texture, 150, 150));
+    
+    objs.create (new flower (map_texture, 400, 400));
+    
+    objs.create (new flower (map_texture, 700, 700));
     
     while (window.isOpen())
     {

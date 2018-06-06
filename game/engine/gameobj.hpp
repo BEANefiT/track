@@ -41,7 +41,7 @@ class gameobj: public graphobj, public physobj
         void                    upd (sf::RenderWindow&, float time);
         void                    set_speed (enum direction, float, float);
         virtual void            check ()                    = 0;
-        virtual void            collide (gameobj*)          = 0;
+        virtual void            respond (gameobj*)          = 0;
         virtual void            move (float time)           = 0;
         virtual void            draw (sf::RenderWindow&)    = 0;
         virtual sf::String*     get_scheme()                = 0;

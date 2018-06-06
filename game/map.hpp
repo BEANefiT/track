@@ -57,7 +57,7 @@ class map: public gameobj
     
         void move (float)           override {};
 
-        void collide (gameobj*)     override {};
+        void respond (gameobj*)     override {};
     
         void check()                override {};
     
