@@ -36,9 +36,9 @@ class map: public gameobj
                                                                     graphobj::_width,           \
                                                                     graphobj::_height));        \
                                                                                                 \
-                            _sprite.move (graphobj::_width, 0);                                 \
-                                                                                                \
                             graphobj::draw (window);                                            \
+                                                                                                \
+                            _sprite.move (graphobj::_width, 0);                                 \
                                                                                                 \
                             break;                                                              \
                         }
@@ -55,9 +55,13 @@ class map: public gameobj
             }
         }
     
-        void move (float) override {};
+        void move (float)           override {};
 
-    void collide (gameobj*) override {};
+        void collide (gameobj*)     override {};
+    
+        void check()                override {};
+    
+        sf::String* get_scheme()    override { return _scheme; }
 };
 
 #endif //__MAP_HPP__

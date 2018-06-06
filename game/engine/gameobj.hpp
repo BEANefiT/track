@@ -36,13 +36,15 @@ class gameobj: public graphobj, public physobj
                     float vx, float vy,     float ax, float ay,
                     enum direction dir);
     
-        bool            isAlive();
-        int             get_type();
-        void            upd (sf::RenderWindow&, float time);
-        void            set_speed (enum direction, float, float);
-        virtual void    move (float time) = 0;
-        virtual void    collide (gameobj*) = 0;
-        virtual void    draw (sf::RenderWindow&) = 0;
+        bool                    isAlive();
+        int                     get_type();
+        void                    upd (sf::RenderWindow&, float time);
+        void                    set_speed (enum direction, float, float);
+        virtual void            check ()                    = 0;
+        virtual void            collide (gameobj*)          = 0;
+        virtual void            move (float time)           = 0;
+        virtual void            draw (sf::RenderWindow&)    = 0;
+        virtual sf::String*     get_scheme()                = 0;
 };
 
 gameobj::gameobj (  int type, sf::Texture& t,   float x, float y,

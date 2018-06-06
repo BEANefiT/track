@@ -36,7 +36,14 @@ void    objmanager::create (gameobj* object)
 void    objmanager::run (sf::RenderWindow& window, float time)
 {
     blist <gameobj*> :: blist_elem* obj_ptr1 = _objs -> get_head();
+    blist <gameobj*> :: blist_elem* obj_ptr  = obj_ptr1;
     blist <gameobj*> :: blist_elem* obj_ptr2 = obj_ptr1 -> get_next();
+    
+    for (int i = 0; i < _objs -> size(); i++)
+    {
+        obj_ptr -> get_elem() -> check();
+        obj_ptr = obj_ptr -> get_next();
+    }
     
     for (int i = 0; i < _objs -> size(); i++)
     {

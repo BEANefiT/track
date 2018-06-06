@@ -21,13 +21,9 @@ class player: public gameobj
         {
             _diag_speed  = _default_speed / 1.41;
         };
-
-        void check();
     
         void move (float time) override
         {
-            check();
-            
             if (_vx == 0 && _vy == 0)
             {
                 stay();
@@ -55,49 +51,67 @@ class player: public gameobj
             {
                 case 0:
                 {
+                    sf::String* scheme = obj -> get_scheme();
                     
+                    if (_vx < 0)
+                        if (scheme [(int) (get_pos().y / obj -> get_height())] [(int) ((get_pos().x - get_width() / 2) / obj -> get_width())] == '0')
+                            _vx = 0;
+                    
+                    if (_vx > 0)
+                        if (scheme [(int) (get_pos().y / obj -> get_height())] [(int) ((get_pos().x + get_width() / 2) / obj -> get_width())] == '0')
+                            _vx = 0;
+                    
+                    if (_vy < 0)
+                        if (scheme [(int) ((get_pos().y - get_height() / 2) / obj -> get_height())] [(int) (get_pos().x / obj -> get_width())] == '0')
+                            _vy = 0;
+                    
+                    if (_vy > 0)
+                        if (scheme [(int) ((get_pos().y + get_height() / 2) / obj -> get_height())] [(int) (get_pos().x / obj -> get_width())] == '0')
+                            _vy = 0;
                 }
             }
         }
+    
+        void check() override
+        {
+            if (ISKEY (KEY::A))
+            {
+                if (ISKEY (KEY::W))  { set_speed (left_up,   -_diag_speed, -_diag_speed); return; }
+                
+                if (ISKEY (KEY::S))  { set_speed (left_down, -_diag_speed,  _diag_speed); return; }
+                
+                set_speed (left, -_default_speed, 0);
+                
+                return;
+            }
+            
+            if (ISKEY (KEY::D))
+            {
+                if (ISKEY (KEY::W))  { set_speed (right_up,   _diag_speed, -_diag_speed); return; }
+                
+                if (ISKEY (KEY::S))  { set_speed (right_down, _diag_speed,  _diag_speed); return; }
+                
+                set_speed (right, _default_speed, 0);
+                
+                return;
+            }
+            
+            if (ISKEY (KEY::W))
+            {
+                set_speed (up, 0, -_default_speed);
+                
+                return;
+            }
+            
+            if (ISKEY (KEY::S))
+            {
+                set_speed (down, 0, _default_speed);
+                
+                return;
+            }
+        }
+    
+        sf::String* get_scheme() override {}
 };
-
-void player::check()
-{
-    if (ISKEY (KEY::A))
-    {
-        if (ISKEY (KEY::W))  { set_speed (left_up,   -_diag_speed, -_diag_speed); return; }
-        
-        if (ISKEY (KEY::S))  { set_speed (left_down, -_diag_speed,  _diag_speed); return; }
-        
-        set_speed (left, -_default_speed, 0);
-        
-        return;
-    }
-    
-    if (ISKEY (KEY::D))
-    {
-        if (ISKEY (KEY::W))  { set_speed (right_up,   _diag_speed, -_diag_speed); return; }
-        
-        if (ISKEY (KEY::S))  { set_speed (right_down, _diag_speed,  _diag_speed); return; }
-        
-        set_speed (right, _default_speed, 0);
-        
-        return;
-    }
-    
-    if (ISKEY (KEY::W))
-    {
-        set_speed (up, 0, -_default_speed);
-        
-        return;
-    }
-    
-    if (ISKEY (KEY::S))
-    {
-        set_speed (down, 0, _default_speed);
-        
-        return;
-    }
-}
 
 #endif //__PLAYER_HPP__
