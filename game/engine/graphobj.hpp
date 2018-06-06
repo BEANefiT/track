@@ -30,7 +30,7 @@ public:
 };
 
 graphobj::graphobj (sf::Texture& t, float x, float y, float width, float height,
-                    float frame_cur, float frame_count, float animation_speed):
+                    float frame_default, float frame_count, float animation_speed):
     _x                  (x),
     _y                  (y),
     _width              (width),
