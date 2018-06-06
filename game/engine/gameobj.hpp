@@ -7,44 +7,115 @@
 
 class gameobj: public graphobj, public physobj
 {
-public:
-    void            upd (sf::RenderWindow&, float time);
+    private:
+        bool    _life;
     
-    gameobj (   sf::Texture&,           float x, float y,
-                float width_graph,      float height_graph,
-                float width_phys,       float height_phys);
+    public:
+        gameobj (   sf::Texture&,           float x, float y,
+                    float width_graph,      float height_graph,
+                    float width_phys,       float height_phys);
     
-    gameobj (   sf::Texture&,           float x, float y,
-                float width_graph,      float height_graph,
-                float width_phys,       float height_phys,
-                float frame_default,    float frame_count,
-                float animation_speed);
+        gameobj (   sf::Texture&,           float x, float y,
+                    float width_graph,      float height_graph,
+                    float width_phys,       float height_phys,
+                    float frame_default,    float frame_count,
+                    float animation_speed);
 
-    gameobj (   sf::Texture&,           float x, float y,
-                float width_graph,      float height_graph,
-                float width_phys,       float height_phys,
-                float vx, float vy,     float ax, float ay,
-                enum direction dir);
+        gameobj (   sf::Texture&,           float x, float y,
+                    float width_graph,      float height_graph,
+                    float width_phys,       float height_phys,
+                    float vx, float vy,     float ax, float ay,
+                    enum direction dir);
 
-    gameobj (   sf::Texture&,           float x, float y,
-                float width_graph,      float height_graph,
-                float width_phys,       float height_phys,
-                float frame_default,    float frame_count,
-                float animation_speed,
-                float vx, float vy,     float ax, float ay,
-                enum direction dir);
+        gameobj (   sf::Texture&,           float x, float y,
+                    float width_graph,      float height_graph,
+                    float width_phys,       float height_phys,
+                    float frame_default,    float frame_count,
+                    float animation_speed,
+                    float vx, float vy,     float ax, float ay,
+                    enum direction dir);
     
-    void            set_speed (enum direction, float);
-    virtual void    move (float);
-    virtual void    collide (gameobj*);
-    virtual void    respond (gameobj*);
-    virtual void    draw (sf::RenderWindow&);
+        void            upd (sf::RenderWindow&, float time);
+        void            set_speed (enum direction, float);
+        bool            isAlive();
+        virtual void    move (float time);
+        virtual void    collide (gameobj*);
+        virtual void    draw (sf::RenderWindow&);
 };
 
-void gameobj::upd(sf::RenderWindow& window, float time)
+gameobj::gameobj (  sf::Texture& t,         float x, float y,
+                    float width_graph,      float height_graph,
+                    float width_phys,       float height_phys):
+
+    graphobj    (t, x, y, width_graph, height_graph, 0, 0, 0),
+
+    physobj     (x + width_graph / 2, y + height_graph / 2,
+                 width_phys, height_phys),
+
+    _life       (true)
+{}
+
+gameobj::gameobj (  sf::Texture& t,         float x, float y,
+                    float width_graph,      float height_graph,
+                    float width_phys,       float height_phys,
+                    float frame_default,    float frame_count,
+                    float animation_speed):
+
+    graphobj    (t, x, y, width_graph, height_graph,
+                 frame_default, frame_count, animation_speed),
+
+    physobj     (x + width_graph / 2, y + height_graph / 2,
+                 width_phys, height_phys),
+
+    _life       (true)
+{}
+
+gameobj::gameobj (  sf::Texture& t,         float x, float y,
+                    float width_graph,      float height_graph,
+                    float width_phys,       float height_phys,
+                    float vx, float vy,     float ax, float ay,
+                    enum direction dir):
+
+    graphobj    (t, x, y, width_graph, height_graph, 0, 0, 0, dir),
+
+    physobj     (x + width_graph / 2, y + height_graph / 2,
+                 width_phys, height_phys, vx, vy, ax, ay),
+
+    _life       (true)
+{}
+
+gameobj::gameobj (  sf::Texture& t,         float x, float y,
+                    float width_graph,      float height_graph,
+                    float width_phys,       float height_phys,
+                    float frame_default,    float frame_count,
+                    float animation_speed,  float vx, float vy,
+                    float ax, float ay      enum direction dir):
+
+    graphobj    (t, x, y, width_graph, height_graph,
+                 frame_default, frame_count, animation_speed, dir),
+
+    physobj     (x + width_graph / 2, y + height_graph / 2,
+                 width_phys, height_phys, vx, vy, ax, ay),
+
+    _life       (true)
+{}
+
+void    gameobj::upd(sf::RenderWindow& window, float time)
 {
     move (time);
     draw (window);
+}
+
+bool    gameobj::isAlive()
+{
+    return _life;
+}
+
+void    gameobj::set_speed (enum direction dir, float v)
+{
+    _dir = dir;
+    _vx = v;
+    _vy = v;
 }
 
 #endif //__GAMEOBJ_HPP__
