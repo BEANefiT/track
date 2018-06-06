@@ -110,11 +110,6 @@ void    gameobj::upd(sf::RenderWindow& window, float time)
     draw (window);
 }
 
-bool    gameobj::isAlive()
-{
-    return _life;
-}
-
 void    gameobj::set_speed (enum direction dir, float v)
 {
     _dir = dir;
