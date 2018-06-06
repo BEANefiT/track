@@ -35,8 +35,9 @@ graphobj::graphobj (sf::Texture& t, float x, float y, float width, float height,
     _y                  (y),
     _width              (width),
     _height             (height),
-    _frame_cur          (frame_cur),
+    _frame_default      (frame_default),
     _frame_count        (frame_count),
+    _frame_cur          (frame_default),
     _animation_speed    (animation_speed),
     _dir                (down)
 {
@@ -51,6 +52,7 @@ graphobj::graphobj (sf::Texture& t, float x, float y, float width, float height,
     _height             (height),
     _frame_default      (frame_default),
     _frame_count        (frame_count),
+    _frame_cur          (frame_default),
     _animation_speed    (animation_speed),
     _dir                (dir)
 {
@@ -73,12 +75,20 @@ void    graphobj::move (float dx, float dy)
 {
     _x += dx;
     _y += dy;
+    
+    _frame_cur += animation_speed;
+    
+    if (_frame_cur >= _frame_count)
+        _frame_cur = 0;
+    
+    _sprite.setTextureRect  (sf::IntRect (_width * _frame_cur, _height * _dir, _width, _height));
+    _sprite.setPosition     (_x, _y);
 }
 
-void    graphobj::move (struct vector v)
+void    graphobj::move (struct vector dv)
 {
-    _x += v.x;
-    _y += v.y;
+    _x += dv.x;
+    _y += dv.y;
 }
 
 void    graphobj::stay()
