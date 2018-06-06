@@ -1,13 +1,13 @@
-//
-//  game.h
-//  game
-//
-//  Created by BEANefiT on 06.06.2018.
-//  Copyright © 2018 BEANefiT. All rights reserved.
-//
+#ifndef __GAME_H__
+#define __GAME_H__
 
-#ifndef game_h
-#define game_h
+#include "engine/gameobj.hpp"
+#include "engine/objmanager.hpp"
 
+enum type_t
+{
+    map_    = 0,
+    player_ = 1
+};
 
-#endif /* game_h */
+#endif //__GAME_H__

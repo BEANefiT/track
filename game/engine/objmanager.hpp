@@ -15,7 +15,7 @@ class objmanager
     
         void    create (gameobj*);
     
-        void    run();
+        void    run (sf::RenderWindow&, float time);
 };
 
 objmanager::objmanager ()
@@ -33,7 +33,7 @@ void    objmanager::create (gameobj* object)
     _objs -> push_back (object);
 }
 
-void    objmanager::run()
+void    objmanager::run (sf::RenderWindow& window, float time)
 {
     blist <gameobj*> :: blist_elem* obj_ptr1 = _objs -> get_head();
     blist <gameobj*> :: blist_elem* obj_ptr2 = obj_ptr1 -> get_next();
@@ -52,12 +52,12 @@ void    objmanager::run()
             obj_ptr2 = obj_ptr2 -> get_next();
         }
         
-        obj1 -> upd();
+        obj1 -> upd (window, time);
             
-        blist <gameobj*>* tmp = obj_ptr1 -> get_next();
+        blist <gameobj*> :: blist_elem* tmp = obj_ptr1 -> get_next();
         
         if (!(obj1 -> isAlive()))
-            rm (obj_ptr1);
+            _objs -> rm_elem(obj_ptr1);
         
         obj_ptr1 = tmp;
     }

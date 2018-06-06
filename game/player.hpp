@@ -1,7 +1,7 @@
 #ifndef __PLAYER_HPP__
 #define __PLAYER_HPP__
 
-#include "engine/gameobj.hpp"
+#include "game.h"
 
 #define ISKEY sf::Keyboard::isKeyPressed
 #define KEY sf::Keyboard::Key
@@ -14,7 +14,9 @@ class player: public gameobj
 
     public:
         player (sf::Texture& t, float x, float y):
-            gameobj (t, x, y, 96, 96, 32, 32, 2, 8, 0.01),
+    
+            gameobj (1, t, x, y, 96, 96, 32, 32, 2, 8, 0.01),
+    
             _default_speed (0.1)
         {
             _diag_speed  = _default_speed / 1.41;
@@ -45,6 +47,17 @@ class player: public gameobj
         void draw (sf::RenderWindow& window) override
         {
             graphobj::draw (window);
+        }
+    
+        void collide (gameobj* obj) override
+        {
+            switch (obj -> get_type())
+            {
+                case 0:
+                {
+                    
+                }
+            }
         }
 };
 

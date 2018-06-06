@@ -36,11 +36,13 @@ class gameobj: public graphobj, public physobj
                     float vx, float vy,     float ax, float ay,
                     enum direction dir);
     
+        bool            isAlive();
+        int             get_type();
         void            upd (sf::RenderWindow&, float time);
         void            set_speed (enum direction, float);
-        virtual void    move (float time);
-        virtual void    collide (gameobj*);
-        virtual void    draw (sf::RenderWindow&);
+        virtual void    move (float time) = 0;
+        virtual void    collide (gameobj*) = 0;
+        virtual void    draw (sf::RenderWindow&) = 0;
 };
 
 gameobj::gameobj (  int type, sf::Texture& t,   float x, float y,
@@ -84,7 +86,7 @@ gameobj::gameobj (  int type, sf::Texture& t,   float x, float y,
                  width_phys, height_phys, vx, vy, ax, ay),
 
     _life       (true),
-    _type       (type),
+    _type       (type)
 {}
 
 gameobj::gameobj (  int type, sf::Texture& t,   float x, float y,
@@ -92,7 +94,7 @@ gameobj::gameobj (  int type, sf::Texture& t,   float x, float y,
                     float width_phys,           float height_phys,
                     float frame_default,        float frame_count,
                     float animation_speed,      float vx, float vy,
-                    float ax, float ay          enum direction dir):
+                    float ax, float ay,         enum direction dir):
 
     graphobj    (t, x, y, width_graph, height_graph,
                  frame_default, frame_count, animation_speed, dir),
@@ -115,6 +117,16 @@ void    gameobj::set_speed (enum direction dir, float v)
     _dir = dir;
     _vx = v;
     _vy = v;
+}
+
+bool    gameobj::isAlive()
+{
+    return _life;
+}
+
+int     gameobj::get_type()
+{
+    return _type;
 }
 
 #endif //__GAMEOBJ_HPP__

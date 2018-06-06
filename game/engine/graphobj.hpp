@@ -76,7 +76,7 @@ void    graphobj::move (float dx, float dy)
     _x += dx;
     _y += dy;
     
-    _frame_cur += animation_speed;
+    _frame_cur += _animation_speed;
     
     if (_frame_cur >= _frame_count)
         _frame_cur = 0;

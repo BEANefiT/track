@@ -62,8 +62,8 @@ physobj::physobj (float x, float y, float width, float height, float vx, float v
                                                             \
     void    physobj:: name (struct vector v)                \
     {                                                       \
-        operand1 = v##.x;                                   \
-        operand2 = v##.y;                                   \
+        operand1 = v.x;                                   \
+        operand2 = v.y;                                   \
     }
 
 #define CHANGE( name, param1, param2, v, operand1, operand2)\
@@ -75,8 +75,8 @@ physobj::physobj (float x, float y, float width, float height, float vx, float v
                                                             \
     void    physobj:: name (struct vector v)                \
     {                                                       \
-        operand1 += v##.x;                                  \
-        operand2 += v##.y;                                  \
+        operand1 += v.x;                                  \
+        operand2 += v.y;                                  \
     }
 
 SET     (set_pos, x,  y,  r,  _x, _y);
