@@ -9,25 +9,26 @@ class gameobj: public graphobj, public physobj
 {
     private:
         bool    _life;
+        int     _type;
     
     public:
-        gameobj (   sf::Texture&,           float x, float y,
+        gameobj (   int, sf::Texture&,      float x, float y,
                     float width_graph,      float height_graph,
                     float width_phys,       float height_phys);
     
-        gameobj (   sf::Texture&,           float x, float y,
+        gameobj (   int, sf::Texture&,      float x, float y,
                     float width_graph,      float height_graph,
                     float width_phys,       float height_phys,
                     float frame_default,    float frame_count,
                     float animation_speed);
 
-        gameobj (   sf::Texture&,           float x, float y,
+        gameobj (   int, sf::Texture&,      float x, float y,
                     float width_graph,      float height_graph,
                     float width_phys,       float height_phys,
                     float vx, float vy,     float ax, float ay,
                     enum direction dir);
 
-        gameobj (   sf::Texture&,           float x, float y,
+        gameobj (   int, sf::Texture&,      float x, float y,
                     float width_graph,      float height_graph,
                     float width_phys,       float height_phys,
                     float frame_default,    float frame_count,
@@ -43,22 +44,23 @@ class gameobj: public graphobj, public physobj
         virtual void    draw (sf::RenderWindow&);
 };
 
-gameobj::gameobj (  sf::Texture& t,         float x, float y,
-                    float width_graph,      float height_graph,
-                    float width_phys,       float height_phys):
+gameobj::gameobj (  int type, sf::Texture& t,   float x, float y,
+                    float width_graph,          float height_graph,
+                    float width_phys,           float height_phys):
 
     graphobj    (t, x, y, width_graph, height_graph, 0, 0, 0),
 
     physobj     (x + width_graph / 2, y + height_graph / 2,
                  width_phys, height_phys),
 
-    _life       (true)
+    _life       (true),
+    _type       (type)
 {}
 
-gameobj::gameobj (  sf::Texture& t,         float x, float y,
-                    float width_graph,      float height_graph,
-                    float width_phys,       float height_phys,
-                    float frame_default,    float frame_count,
+gameobj::gameobj (  int type, sf::Texture& t,   float x, float y,
+                    float width_graph,          float height_graph,
+                    float width_phys,           float height_phys,
+                    float frame_default,        float frame_count,
                     float animation_speed):
 
     graphobj    (t, x, y, width_graph, height_graph,
@@ -67,13 +69,14 @@ gameobj::gameobj (  sf::Texture& t,         float x, float y,
     physobj     (x + width_graph / 2, y + height_graph / 2,
                  width_phys, height_phys),
 
-    _life       (true)
+    _life       (true),
+    _type       (type)
 {}
 
-gameobj::gameobj (  sf::Texture& t,         float x, float y,
-                    float width_graph,      float height_graph,
-                    float width_phys,       float height_phys,
-                    float vx, float vy,     float ax, float ay,
+gameobj::gameobj (  int type, sf::Texture& t,   float x, float y,
+                    float width_graph,          float height_graph,
+                    float width_phys,           float height_phys,
+                    float vx, float vy,         float ax, float ay,
                     enum direction dir):
 
     graphobj    (t, x, y, width_graph, height_graph, 0, 0, 0, dir),
@@ -81,15 +84,16 @@ gameobj::gameobj (  sf::Texture& t,         float x, float y,
     physobj     (x + width_graph / 2, y + height_graph / 2,
                  width_phys, height_phys, vx, vy, ax, ay),
 
-    _life       (true)
+    _life       (true),
+    _type       (type),
 {}
 
-gameobj::gameobj (  sf::Texture& t,         float x, float y,
-                    float width_graph,      float height_graph,
-                    float width_phys,       float height_phys,
-                    float frame_default,    float frame_count,
-                    float animation_speed,  float vx, float vy,
-                    float ax, float ay      enum direction dir):
+gameobj::gameobj (  int type, sf::Texture& t,   float x, float y,
+                    float width_graph,          float height_graph,
+                    float width_phys,           float height_phys,
+                    float frame_default,        float frame_count,
+                    float animation_speed,      float vx, float vy,
+                    float ax, float ay          enum direction dir):
 
     graphobj    (t, x, y, width_graph, height_graph,
                  frame_default, frame_count, animation_speed, dir),
@@ -97,7 +101,8 @@ gameobj::gameobj (  sf::Texture& t,         float x, float y,
     physobj     (x + width_graph / 2, y + height_graph / 2,
                  width_phys, height_phys, vx, vy, ax, ay),
 
-    _life       (true)
+    _life       (true),
+    _type       (type)
 {}
 
 void    gameobj::upd(sf::RenderWindow& window, float time)
