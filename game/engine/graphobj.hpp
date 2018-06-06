@@ -45,14 +45,14 @@ graphobj::graphobj (sf::Texture& t, float x, float y, float width, float height,
 
 graphobj::graphobj (sf::Texture& t, float x, float y, float width, float height,
                     float frame_default, float frame_count, float animation_speed, enum direction dir):
-_x                  (x),
-_y                  (y),
-_width              (width),
-_height             (height),
-_frame_default      (frame_default),
-_frame_count        (frame_count),
-_animation_speed    (animation_speed),
-_dir                (dir)
+    _x                  (x),
+    _y                  (y),
+    _width              (width),
+    _height             (height),
+    _frame_default      (frame_default),
+    _frame_count        (frame_count),
+    _animation_speed    (animation_speed),
+    _dir                (dir)
 {
     _sprite.setTexture (t);
 }
