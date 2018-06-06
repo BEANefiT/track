@@ -21,8 +21,8 @@ struct vector
     float y;
     
     vector (float a, float b):
-    x (a),
-    y (b)
+        x (a),
+        y (b)
     {};
 };
 
