@@ -51,6 +51,8 @@ void    objmanager::run()
             
             obj_ptr2 = obj_ptr2 -> get_next();
         }
+        
+        obj1 -> upd();
             
         blist <gameobj*>* tmp = obj_ptr1 -> get_next();
         
