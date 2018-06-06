@@ -41,7 +41,8 @@ graphobj::graphobj (sf::Texture& t, float x, float y, float width, float height,
     _animation_speed    (animation_speed),
     _dir                (down)
 {
-    _sprite.setTexture (t);
+    _sprite.setTexture  (t);
+    _sprite.setPosition (x, y);
 };
 
 graphobj::graphobj (sf::Texture& t, float x, float y, float width, float height,
@@ -56,7 +57,8 @@ graphobj::graphobj (sf::Texture& t, float x, float y, float width, float height,
     _animation_speed    (animation_speed),
     _dir                (dir)
 {
-    _sprite.setTexture (t);
+    _sprite.setTexture  (t);
+    _sprite.setPosition (x, y);
 }
 
 void    graphobj::set_pos (float x, float y)
@@ -81,7 +83,7 @@ void    graphobj::move (float dx, float dy)
     if (_frame_cur >= _frame_count)
         _frame_cur = 0;
     
-    _sprite.setTextureRect  (sf::IntRect (_width * _frame_cur, _height * _dir, _width, _height));
+    _sprite.setTextureRect  (sf::IntRect (_width * (int) _frame_cur, _height * _dir, _width, _height));
     _sprite.setPosition     (_x, _y);
 }
 
@@ -89,6 +91,14 @@ void    graphobj::move (struct vector dv)
 {
     _x += dv.x;
     _y += dv.y;
+    
+    _frame_cur += _animation_speed;
+    
+    if (_frame_cur >= _frame_count)
+        _frame_cur = 0;
+    
+    _sprite.setTextureRect  (sf::IntRect (_width * (int) _frame_cur, _height * _dir, _width, _height));
+    _sprite.setPosition     (_x, _y);
 }
 
 void    graphobj::stay()

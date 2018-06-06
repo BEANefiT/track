@@ -15,9 +15,9 @@ class player: public gameobj
     public:
         player (sf::Texture& t, float x, float y):
     
-            gameobj (1, t, x, y, 96, 96, 32, 32, 2, 8, 0.01),
+            gameobj (1, t, x, y, 96, 96, 32, 32, 2, 8, 0.03),
     
-            _default_speed (0.1)
+            _default_speed (0.3)
         {
             _diag_speed  = _default_speed / 1.41;
         };
@@ -65,36 +65,36 @@ void player::check()
 {
     if (ISKEY (KEY::A))
     {
-        if (ISKEY (KEY::W))  { set_speed (left_up,   _diag_speed); return; }
+        if (ISKEY (KEY::W))  { set_speed (left_up,   -_diag_speed, -_diag_speed); return; }
         
-        if (ISKEY (KEY::S))  { set_speed (left_down, _diag_speed); return; }
+        if (ISKEY (KEY::S))  { set_speed (left_down, -_diag_speed,  _diag_speed); return; }
         
-        set_speed (left, _default_speed);
+        set_speed (left, -_default_speed, 0);
         
         return;
     }
     
     if (ISKEY (KEY::D))
     {
-        if (ISKEY (KEY::W))  { set_speed (right_up,   _diag_speed); return; }
+        if (ISKEY (KEY::W))  { set_speed (right_up,   _diag_speed, -_diag_speed); return; }
         
-        if (ISKEY (KEY::S))  { set_speed (right_down, _diag_speed); return; }
+        if (ISKEY (KEY::S))  { set_speed (right_down, _diag_speed,  _diag_speed); return; }
         
-        set_speed (right, _default_speed);
+        set_speed (right, _default_speed, 0);
         
         return;
     }
     
     if (ISKEY (KEY::W))
     {
-        set_speed (up, _default_speed);
+        set_speed (up, 0, -_default_speed);
         
         return;
     }
     
     if (ISKEY (KEY::S))
     {
-        set_speed (down, _default_speed);
+        set_speed (down, 0, _default_speed);
         
         return;
     }

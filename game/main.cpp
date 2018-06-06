@@ -65,7 +65,7 @@ int main()
         //window.setView (view);
         window.clear(sf::Color(58, 58, 58));
         
-        objs.run (window, clock.getElapsedTime().asMicroseconds() / 200);
+        objs.run (window, clock.getElapsedTime().asMicroseconds() / 1000);
         
         clock.restart();
         

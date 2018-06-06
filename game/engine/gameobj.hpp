@@ -39,7 +39,7 @@ class gameobj: public graphobj, public physobj
         bool            isAlive();
         int             get_type();
         void            upd (sf::RenderWindow&, float time);
-        void            set_speed (enum direction, float);
+        void            set_speed (enum direction, float, float);
         virtual void    move (float time) = 0;
         virtual void    collide (gameobj*) = 0;
         virtual void    draw (sf::RenderWindow&) = 0;
@@ -112,11 +112,11 @@ void    gameobj::upd(sf::RenderWindow& window, float time)
     draw (window);
 }
 
-void    gameobj::set_speed (enum direction dir, float v)
+void    gameobj::set_speed (enum direction dir, float vx, float vy)
 {
-    _dir = dir;
-    _vx = v;
-    _vy = v;
+    _dir    = dir;
+    _vx     = vx;
+    _vy     = vy;
 }
 
 bool    gameobj::isAlive()
