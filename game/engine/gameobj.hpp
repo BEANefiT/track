@@ -7,44 +7,45 @@
 
 class gameobj: public graphobj, public physobj
 {
-    protected:
-        bool    _life;
-        int     _type;
-    
-    public:
-        gameobj (   int, sf::Texture&,      float x, float y,
-                    float width_graph,      float height_graph,
-                    float width_phys,       float height_phys);
-    
-        gameobj (   int, sf::Texture&,      float x, float y,
-                    float width_graph,      float height_graph,
-                    float width_phys,       float height_phys,
-                    float frame_default,    float frame_count,
-                    float animation_speed);
+protected:
+    bool    _life;
+    int     _type;
 
-        gameobj (   int, sf::Texture&,      float x, float y,
-                    float width_graph,      float height_graph,
-                    float width_phys,       float height_phys,
-                    float vx, float vy,     float ax, float ay,
-                    enum direction dir);
+public:
+    gameobj (   int, sf::Texture&,      float x, float y,
+                float width_graph,      float height_graph,
+                float width_phys,       float height_phys);
 
-        gameobj (   int, sf::Texture&,      float x, float y,
-                    float width_graph,      float height_graph,
-                    float width_phys,       float height_phys,
-                    float frame_default,    float frame_count,
-                    float animation_speed,
-                    float vx, float vy,     float ax, float ay,
-                    enum direction dir);
-    
-        bool                    isAlive();
-        int                     get_type();
-        void                    upd (sf::RenderWindow&, float time);
-        void                    set_speed (enum direction, float, float);
-        virtual void            check ()                    = 0;
-        virtual void            respond (gameobj*)          = 0;
-        virtual void            move (float time)           = 0;
-        virtual void            draw (sf::RenderWindow&)    = 0;
-        virtual sf::String*     get_scheme()                = 0;
+    gameobj (   int, sf::Texture&,      float x, float y,
+                float width_graph,      float height_graph,
+                float width_phys,       float height_phys,
+                float frame_default,    float frame_count,
+                float animation_speed);
+
+    gameobj (   int, sf::Texture&,      float x, float y,
+                float width_graph,      float height_graph,
+                float width_phys,       float height_phys,
+                float vx, float vy,     float ax, float ay,
+                enum direction dir);
+
+    gameobj (   int, sf::Texture&,      float x, float y,
+                float width_graph,      float height_graph,
+                float width_phys,       float height_phys,
+                float frame_default,    float frame_count,
+                float animation_speed,
+                float vx, float vy,     float ax, float ay,
+                enum direction dir);
+
+    bool                    isAlive();
+    int                     get_type();
+    void                    upd (sf::RenderWindow&, float time);
+    void                    set_speed (enum direction, float, float);
+    virtual void            check ()                    = 0;
+    virtual void            respond (gameobj*)          = 0;
+    virtual void            move (float time)           = 0;
+    virtual void            draw (sf::RenderWindow&)    = 0;
+    virtual int             get_damage()                = 0;
+    virtual sf::String*     get_scheme()                = 0;
 };
 
 gameobj::gameobj (  int type, sf::Texture& t,   float x, float y,

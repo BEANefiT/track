@@ -5,63 +5,65 @@
 
 class map: public gameobj
 {
-    protected:
-        sf::String*     _scheme;
-        int             _map_width;
-        int             _map_height;
+protected:
+    sf::String*     _scheme;
+    int             _map_width;
+    int             _map_height;
 
-    public:
-        map (int width, int height, float block_sz,
-             sf::Texture& t, sf::String* scheme):
+public:
+    map (int width, int height, float block_sz,
+         sf::Texture& t, sf::String* scheme):
 
-            gameobj (0, t, 0, 0, block_sz, block_sz, block_sz, block_sz),
-    
-            _scheme         (scheme),
-            _map_width      (width),
-            _map_height     (height)
-        {};
+        gameobj (0, t, 0, 0, block_sz, block_sz, block_sz, block_sz),
 
-        void draw (sf::RenderWindow& window) override
+        _scheme         (scheme),
+        _map_width      (width),
+        _map_height     (height)
+    {};
+
+    void draw (sf::RenderWindow& window) override
+    {
+        _sprite.setPosition (0, 0);
+        
+        for (int i = 0; i < _map_height; i++)
         {
-            _sprite.setPosition (0, 0);
-            
-            for (int i = 0; i < _map_height; i++)
+            for (int j = 0; j < _map_width; j++)
             {
-                for (int j = 0; j < _map_width; j++)
-                {
-                    #define DEF_TILE( c, x, y )                                                 \
-                        case c:                                                                 \
-                        {                                                                       \
-                            _sprite.setTextureRect (sf::IntRect (   x, y,                       \
-                                                                    graphobj::_width,           \
-                                                                    graphobj::_height));        \
-                                                                                                \
-                            graphobj::draw (window);                                            \
-                                                                                                \
-                            _sprite.move (graphobj::_width, 0);                                 \
-                                                                                                \
-                            break;                                                              \
-                        }
-
-                    switch (_scheme [i][j])
-                    {
-                        #include "level"
+                #define DEF_TILE( c, x, y )                                                 \
+                    case c:                                                                 \
+                    {                                                                       \
+                        _sprite.setTextureRect (sf::IntRect (   x, y,                       \
+                                                                graphobj::_width,           \
+                                                                graphobj::_height));        \
+                                                                                            \
+                        graphobj::draw (window);                                            \
+                                                                                            \
+                        _sprite.move (graphobj::_width, 0);                                 \
+                                                                                            \
+                        break;                                                              \
                     }
 
-                    #undef DEF_TILE
+                switch (_scheme [i][j])
+                {
+                    #include "level"
                 }
 
-                _sprite.move (-_map_width * graphobj::_width, graphobj::_height);
+                #undef DEF_TILE
             }
-        }
-    
-        void move (float)           override {};
 
-        void respond (gameobj*)     override {};
-    
-        void check()                override {};
-    
-        sf::String* get_scheme()    override { return _scheme; }
+            _sprite.move (-_map_width * graphobj::_width, graphobj::_height);
+        }
+    }
+
+    void move (float)           override {};
+
+    void respond (gameobj*)     override {};
+
+    void check()                override {};
+
+    int get_damage()            override {};
+
+    sf::String* get_scheme()    override { return _scheme; }
 };
 
 #endif //__MAP_HPP__

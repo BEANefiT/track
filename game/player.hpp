@@ -24,127 +24,145 @@
 
 class player: public gameobj
 {
-    protected:
-        float       _default_speed;
-        float       _diag_speed;
-        int         _hitpoints;
+protected:
+    float       _default_speed;
+    float       _diag_speed;
+    int         _hitpoints;
 
-    public:
-        player (sf::Texture& t, float x, float y):
-    
-            gameobj (1, t, x, y, 96, 96, 32, 32, 2, 8, 0.03),
-    
-            _default_speed  (0.3),
-            _hitpoints      (100)
+public:
+    player (sf::Texture& t, float x, float y):
+
+        gameobj (1, t, x, y, 96, 96, 32, 32, 2, 8, 0.03),
+
+        _default_speed  (0.3),
+        _hitpoints      (100)
+    {
+        _diag_speed  = _default_speed / 1.41;
+    };
+
+    void move (float time) override
+    {
+        if (_vx == 0 && _vy == 0)
         {
-            _diag_speed  = _default_speed / 1.41;
-        };
-    
-        void move (float time) override
+            stay();
+            
+            return;
+        }
+        
+        struct vector df (_vx * time, _vy * time);
+        
+        graphobj::  move (df);
+        physobj::   move (df);
+
+        _vx = 0;
+        _vy = 0;
+    }
+
+    void draw (sf::RenderWindow& window) override
+    {
+        graphobj::draw (window);
+    }
+
+    void respond (gameobj* obj) override
+    {
+        switch (obj -> get_type())
         {
-            if (_vx == 0 && _vy == 0)
+            case map_:
             {
-                stay();
+                sf::String* scheme = obj -> get_scheme();
                 
-                return;
+                if (_vx < 0)
+                    if (PLAYER_LEFT( '0' ) || PLAYER_LEFT( 's' ))
+                        _vx = 0;
+                
+                if (_vx > 0)
+                    if (PLAYER_RIGHT( '0' ) || PLAYER_RIGHT( 's' ))
+                        _vx = 0;
+                
+                if (_vy < 0)
+                    if (PLAYER_UP( '0' ) || PLAYER_UP( 's' ))
+                        _vy = 0;
+                
+                if (_vy > 0)
+                    if (PLAYER_DOWN( '0' ) || PLAYER_DOWN( 's' ))
+                        _vy = 0;
+                
+                break;
             }
-            
-            struct vector df (_vx * time, _vy * time);
-            
-            graphobj::  move (df);
-            physobj::   move (df);
-
-            _vx = 0;
-            _vy = 0;
-        }
-
-        void draw (sf::RenderWindow& window) override
-        {
-            graphobj::draw (window);
-        }
-    
-        void respond (gameobj* obj) override
-        {
-            switch (obj -> get_type())
+                
+            case flower_:
             {
-                case map_:
+                if (collide (obj))
                 {
-                    sf::String* scheme = obj -> get_scheme();
+                    _hitpoints -= obj -> get_damage();
                     
-                    if (_vx < 0)
-                        if (PLAYER_LEFT( '0' ) || PLAYER_LEFT( 's' ))
-                            _vx = 0;
-                        
-                    if (_vx > 0)
-                        if (PLAYER_RIGHT( '0' ) || PLAYER_RIGHT( 's' ))
-                            _vx = 0;
-                    
-                    if (_vy < 0)
-                        if (PLAYER_UP( '0' ) || PLAYER_UP( 's' ))
-                            _vy = 0;
-                    
-                    if (_vy > 0)
-                        if (PLAYER_DOWN( '0' ) || PLAYER_DOWN( 's' ))
-                            _vy = 0;
-                    
-                    break;
+                    if (_hitpoints <= 0)
+                        _life = false;
                 }
-                    
-                case flower_:
+                
+                break;
+            }
+                
+            case heart_:
+            {
+                if (collide (obj))
                 {
-                    if (collide (obj))
-                    {
-                        _hitpoints -= 50;
-                        
-                        if (_hitpoints <= 0)
-                            _life = false;
-                    }
+                    _hitpoints += obj -> get_damage();
                     
-                    break;
+                    if (_hitpoints > 100)
+                        _hitpoints = 100;
                 }
+                
+                break;
             }
         }
-    
-        void check() override
+    }
+
+    void check() override
+    {
+        if (ISKEY (KEY::A))
         {
-            if (ISKEY (KEY::A))
-            {
-                if (ISKEY (KEY::W))  { set_speed (left_up,   -_diag_speed, -_diag_speed); return; }
-                
-                if (ISKEY (KEY::S))  { set_speed (left_down, -_diag_speed,  _diag_speed); return; }
-                
-                set_speed (left, -_default_speed, 0);
-                
-                return;
-            }
+            if (ISKEY (KEY::W))  { set_speed (left_up,   -_diag_speed, -_diag_speed); return; }
             
-            if (ISKEY (KEY::D))
-            {
-                if (ISKEY (KEY::W))  { set_speed (right_up,   _diag_speed, -_diag_speed); return; }
-                
-                if (ISKEY (KEY::S))  { set_speed (right_down, _diag_speed,  _diag_speed); return; }
-                
-                set_speed (right, _default_speed, 0);
-                
-                return;
-            }
+            if (ISKEY (KEY::S))  { set_speed (left_down, -_diag_speed,  _diag_speed); return; }
             
-            if (ISKEY (KEY::W))
-            {
-                set_speed (up, 0, -_default_speed);
-                
-                return;
-            }
+            set_speed (left, -_default_speed, 0);
             
-            if (ISKEY (KEY::S))
-            {
-                set_speed (down, 0, _default_speed);
-                
-                return;
-            }
+            return;
         }
-    
-        sf::String* get_scheme() override {}
+        
+        if (ISKEY (KEY::D))
+        {
+            if (ISKEY (KEY::W))  { set_speed (right_up,   _diag_speed, -_diag_speed); return; }
+            
+            if (ISKEY (KEY::S))  { set_speed (right_down, _diag_speed,  _diag_speed); return; }
+            
+            set_speed (right, _default_speed, 0);
+            
+            return;
+        }
+        
+        if (ISKEY (KEY::W))
+        {
+            set_speed (up, 0, -_default_speed);
+            
+            return;
+        }
+        
+        if (ISKEY (KEY::S))
+        {
+            set_speed (down, 0, _default_speed);
+            
+            return;
+        }
+    }
+
+    int         get_damage() override
+    {
+        return _hitpoints;
+    }
+
+    sf::String* get_scheme() override {}
 };
 
 #endif //__PLAYER_HPP__

@@ -2,6 +2,7 @@
 #include "player.hpp"
 #include "map.hpp"
 #include "flower.hpp"
+#include "heart.hpp"
 
 int main()
 {
@@ -23,7 +24,7 @@ int main()
     sf::String scheme [30] {
         "00000000000000000000000000000000000000000000000000000000000000000",
         "0                                                               0",
-        "0                  h                                            0",
+        "0                                                               0",
         "0                                                          s    0",
         "0                                                               0",
         "0      ss                                                       0",
@@ -35,13 +36,13 @@ int main()
         "0                                                               0",
         "0                                                               0",
         "0                                                               0",
-        "0                         h                                     0",
+        "0                                                               0",
         "0          s                                                s   0",
         "0                                                               0",
         "0                                                               0",
         "0                                                               0",
         "0                                                               0",
-        "0                                          h                    0",
+        "0                                                               0",
         "0  s                   s                                        0",
         "0                                                               0",
         "0                                                               0",
@@ -52,9 +53,11 @@ int main()
     
     objs.create (new player (player_texture, 150, 150));
     
-    objs.create (new flower (map_texture, 400, 400));
+    objs.create (new flower (map_texture, 400, 400, 50));
     
-    objs.create (new flower (map_texture, 700, 700));
+    objs.create (new flower (map_texture, 700, 700, 50));
+    
+    objs.create (new heart  (map_texture, 300, 200, 20));
     
     while (window.isOpen())
     {

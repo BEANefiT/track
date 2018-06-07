@@ -1,31 +1,31 @@
-#ifndef __FLOWER_HPP__
-#define __FLOWER_HPP__
+#ifndef __HEART_HPP__
+#define __HEART_HPP__
 
 #include "game.h"
 
-class flower: public gameobj
+class heart: public gameobj
 {
 protected:
-    int     _damage;
+    int     _health;
     
 public:
-    flower (sf::Texture& t, float x, float y, int dmg):
-        gameobj (2, t, x, y, 32, 32, 24, 24, 3, 4, 0, 0, 0, 0, 0, up),
+    heart (sf::Texture& t, float x, float y, int hp):
+        gameobj (3, t, x, y, 32, 32, 24, 24, 4, 5, 0, 0, 0, 0, 0, up),
     
-        _damage (dmg)
+        _health (hp)
     {};
     
-    int             get_damage()                    override
+    int         get_damage()                        override
     {
-        return _damage;
+        return _health;
     }
     
-    void            draw (sf::RenderWindow& window) override
+    void        draw (sf::RenderWindow& window)     override
     {
         graphobj::draw (window);
     }
     
-    void            respond (gameobj* obj)          override
+    void        respond (gameobj* obj)              override
     {
         switch (obj -> get_type())
         {
@@ -33,6 +33,7 @@ public:
             {
                 if (collide (obj))
                     _life = false;
+                
                 break;
             }
         }
@@ -43,4 +44,5 @@ public:
     sf::String*     get_scheme()                    override {};
 };
 
-#endif //__FLOWER_HPP__
+
+#endif //__HEART_HPP__
