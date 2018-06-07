@@ -3,6 +3,7 @@
 #include "map.hpp"
 #include "flower.hpp"
 #include "heart.hpp"
+#include "finish.hpp"
 
 int main()
 {
@@ -41,7 +42,7 @@ int main()
         "0 sss sss s sssss sss s sssssss s sssss 0",
         "0     s   s     s   s s       s s s     0",
         "0ssssss sssssssssss s sssss s s sss ssss0",
-        "0             s     s s     s s s   s   0",
+        "0             s     s s     s s s   s    ",
         "0 s sssssss s s sssss s sss s s s sssss 0",
         "0 s       s s s s     s   s s s s     s 0",
         "0 sssssss s s s sss sssssss s s sssss s 0",
@@ -52,13 +53,13 @@ int main()
         "0   s   s           s s s         s   s 0",
         "0ssss sssssssssss sss s s sssssss s sss 0",
         "0     s     s     s s s s       s       0",
-        "0 s sss sssss sssss s s s sssss sss sss 0",
+        "0 s sss sssss sssss s s sssssss sss sss 0",
         "0 s s   s     s   s   s s     s s   s   0",
         "0 s sss s sssss s sssss s sssss ssssssss0",
         "0 s s   s       s s     s s   s     s   0",
         "0ss s sssssssssss s sss s s s sssss s s 0",
         "0   s       s     s   s s   s     s   s 0",
-        "0 sssss s sss sssssssss s sssssss s sss 0",
+        "0 sssss s sss sssssssss sssssssss s sss 0",
         "0 s     s     s       s             s   0",
         "0 s sssssssssss sssss sssssssssssss s ss0",
         "0 s             s     s             s   0",
@@ -67,7 +68,9 @@ int main()
     
     objs.create (new map (41, 41, 32, map_texture, scheme));
     
-    objs.create (new player (player_texture, 32, 32));
+    objs.create (new player (player_texture, 0, 576));
+    
+    objs.create (new finish (map_texture, 1280, 608));
     
     //objs.create (new flower (map_texture, 400, 400, 50));
     
