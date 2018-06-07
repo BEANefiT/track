@@ -7,20 +7,20 @@
 #define KEY sf::Keyboard::Key
 
 #define PLAYER_LEFT( c )                                                                                                                            \
-    scheme [(int) ((get_pos().y + get_height() / 2) / obj -> get_height())] [(int) ((get_pos().x - get_width() / 2) / obj -> get_width())] == c ||  \
-    scheme [(int) ((get_pos().y + get_height() / 2) / obj -> get_height())] [(int) ((get_pos().x - get_width() / 2) / obj -> get_width())] == c
+    scheme [(int) ((get_pos().y + get_height() / 3) / obj -> get_height())] [(int) ((get_pos().x - get_width() / 2) / obj -> get_width())] == c ||  \
+    scheme [(int) ((get_pos().y + get_height() / 3) / obj -> get_height())] [(int) ((get_pos().x - get_width() / 2) / obj -> get_width())] == c
 
 #define PLAYER_RIGHT( c )                                                                                                                           \
-    scheme [(int) ((get_pos().y + get_height() / 2) / obj -> get_height())] [(int) ((get_pos().x + get_width() / 2) / obj -> get_width())] == c ||  \
-    scheme [(int) ((get_pos().y + get_height() / 2) / obj -> get_height())] [(int) ((get_pos().x + get_width() / 2) / obj -> get_width())] == c
+    scheme [(int) ((get_pos().y + get_height() / 3) / obj -> get_height())] [(int) ((get_pos().x + get_width() / 2) / obj -> get_width())] == c ||  \
+    scheme [(int) ((get_pos().y + get_height() / 3) / obj -> get_height())] [(int) ((get_pos().x + get_width() / 2) / obj -> get_width())] == c
 
 #define PLAYER_UP( c )                                                                                                                              \
-    scheme [(int) ((get_pos().y + get_height() / 3) / obj -> get_height())] [(int) ((get_pos().x + get_width() / 3) / obj -> get_width())] == c ||  \
-    scheme [(int) ((get_pos().y + get_height() / 3) / obj -> get_height())] [(int) ((get_pos().x - get_width() / 3) / obj -> get_width())] == c
+    scheme [(int) ((get_pos().y) / obj -> get_height())] [(int) ((get_pos().x + get_width() / 3) / obj -> get_width())] == c ||  \
+    scheme [(int) ((get_pos().y) / obj -> get_height())] [(int) ((get_pos().x - get_width() / 3) / obj -> get_width())] == c
 
 #define PLAYER_DOWN( c )                                                                                                                            \
-    scheme [(int) ((get_pos().y + get_height()) / obj -> get_height())] [(int) ((get_pos().x + get_width() / 3) / obj -> get_width())] == c ||  \
-    scheme [(int) ((get_pos().y + get_height()) / obj -> get_height())] [(int) ((get_pos().x - get_width() / 3) / obj -> get_width())] == c
+    scheme [(int) ((get_pos().y + get_height() / 2) / obj -> get_height())] [(int) ((get_pos().x + get_width() / 3) / obj -> get_width())] == c ||  \
+    scheme [(int) ((get_pos().y + get_height() / 2) / obj -> get_height())] [(int) ((get_pos().x - get_width() / 3) / obj -> get_width())] == c
 
 class player: public gameobj
 {
@@ -32,7 +32,7 @@ protected:
 public:
     player (sf::Texture& t, float x, float y):
 
-        gameobj (1, t, x, y, 96, 96, 32, 32, 2, 8, 0.03),
+        gameobj (1, t, x, y, 96, 96, 32, 32, 2, 8, 0.031),
 
         _default_speed  (0.3),
         _hitpoints      (100)
