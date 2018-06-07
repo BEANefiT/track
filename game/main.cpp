@@ -1,3 +1,4 @@
+#include <iostream>
 #include "game.h"
 #include "player.hpp"
 #include "map.hpp"
@@ -9,7 +10,12 @@ int main()
 {
     sf::Clock           clock;
     
-    sf::RenderWindow    window (sf::VideoMode(1440, 1440), "test");
+    sf::RenderWindow    window (sf::VideoMode(1312, 1312), "test");
+    
+    sf::Font            font;
+    font.loadFromFile   ("font/lunchds.ttf");
+    
+    sf::Text            text ("", font, 100);
     
     //sf::View            view;
     //view.reset(sf::FloatRect(0, 0, 1280, 640));
@@ -66,13 +72,17 @@ int main()
         "00000000000000000000000000000000000000000"
     };
     
+    gameobj* you = new player (player_texture, 0, 576);
+    
+    gameobj* end = new finish (map_texture, 1280, 608);
+    
     objs.create (new map (41, 41, 32, map_texture, scheme));
     
-    objs.create (new player (player_texture, 0, 576));
+    objs.create (you);
     
-    objs.create (new finish (map_texture, 1280, 608));
+    objs.create (end);
     
-    //objs.create (new flower (map_texture, 400, 400, 50));
+    //objs.create (new flower (map_texture, 32, 600, 100));
     
     //objs.create (new flower (map_texture, 700, 700, 50));
     
@@ -95,6 +105,20 @@ int main()
         objs.run (window, clock.getElapsedTime().asMicroseconds() / 1000);
         
         clock.restart();
+    
+        if (!(you -> isAlive()))
+        {
+            text.setString ("Unlucky ;(");
+            text.setPosition (410, 350);
+        }
+        
+        if (!(end -> isAlive()))
+        {
+            text.setString ("Victory :)");
+            text.setPosition (410, 350);
+        }
+        
+        window.draw (text);
         
         window.display();
     }

@@ -32,9 +32,9 @@ protected:
 public:
     player (sf::Texture& t, float x, float y):
 
-        gameobj (1, t, x, y, 96, 96, 32, 32, 2, 8, 0.031),
+        gameobj (1, t, x, y, 96, 96, 32, 32, 2, 8, 0.05),
 
-        _default_speed  (0.3),
+        _default_speed  (0.5),
         _hitpoints      (100)
     {
         _diag_speed  = _default_speed / 1.41;
@@ -112,6 +112,14 @@ public:
                     if (_hitpoints > 100)
                         _hitpoints = 100;
                 }
+                
+                break;
+            }
+                
+            case finish_:
+            {
+                if (collide (obj))
+                    _life = false;
                 
                 break;
             }

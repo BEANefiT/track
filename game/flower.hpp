@@ -33,6 +33,7 @@ public:
             {
                 if (collide (obj))
                     _life = false;
+                
                 break;
             }
         }
